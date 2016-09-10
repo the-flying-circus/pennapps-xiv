@@ -1,6 +1,6 @@
 #welcome-wrapper {
     position: relative;
-    top: 20vh;
+    top: 15vh;
 }
 
 #welcome-div {
@@ -9,4 +9,20 @@
     left: 0;
     right: 0;
     opacity: 0;
+}
+
+.input-field {
+    margin-top: 3rem;
+}
+
+.input-field input, .input-field label {
+    font-size: 1.5rem;
+}
+
+.input-field label {
+    top: .4rem;
+}
+
+.input-field input:focus + label {
+    font-size: 1.2rem;
 }
