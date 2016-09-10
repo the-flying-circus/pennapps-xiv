@@ -36,9 +36,13 @@
                 <tbody>
                     {% for item in services %}
                     <tr>
-                        <td>{{ item.type }}</td>
+                        {% if item.type == "hospital" %}
+                        <td><i class="tiny material-icons">local_hospital</i> Hospital</td>
+                        {% else %}
+                        <td>{{ item.type|title }}</td>
+                        {% endif %}
                         <td>{{ item.name }}</td>
-                        <td>{{ item.dist }}</td>
+                        <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -59,9 +63,13 @@
                 <tbody>
                     {% for item in transportation %}
                     <tr>
-                        <td>{{ item.type }}</td>
+                        {% if item.type == "bus_station" %}
+                        <td><i class="tiny material-icons">directions_bus</i> Bus Stop</td>
+                        {% else %}
+                        <td>{{ item.type|title }}</td>
+                        {% endif %}
                         <td>{{ item.name }}</td>
-                        <td>{{ item.dist }}</td>
+                        <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -84,7 +92,7 @@
                     <tr>
                         <td>{{ item.type }}</td>
                         <td class="timeago" title="{{ item.time }}">{{ item.time|format_date }}</td>
-                        <td>{{ item.dist }}</td>
+                        <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
                 </tbody>
