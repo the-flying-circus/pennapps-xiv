@@ -132,7 +132,7 @@ def get_public_services(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
     data = get_nearby(loc["lat"], loc["lng"], building="hospital|library|book_store|post_office")
     out = []
-    for x in data["results"]:
+    for x in data["results"][:15]:
         loc2 = x["geometry"]["location"]
         out.append({
             "name": x["name"],
@@ -160,7 +160,7 @@ def get_transportation(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
     data = get_nearby(loc["lat"], loc["lng"], building="bus_station|subway_station")
     out = []
-    for x in data["results"]:
+    for x in data["results"][:10]:
         loc2 = x["geometry"]["location"]
         out.append({
             "name": x["name"],

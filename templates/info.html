@@ -51,6 +51,11 @@
                         <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
+                    {% if services|length == 0 %}
+                    <tr>
+                        <td colspan="3">There are no public services in this area.</td>
+                    </tr>
+                    {% endif %}
                 </tbody>
             </table>
         </div>
@@ -80,6 +85,11 @@
                         <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
+                    {% if transportation|length == 0 %}
+                    <tr>
+                        <td colspan="3">There are no bus stops or subway stations in this area.</td>
+                    </tr>
+                    {% endif %}
                 </tbody>
             </table>
         </div>
@@ -103,6 +113,11 @@
                         <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
+                    {% if crimes|length == 0 %}
+                    <tr>
+                        <td colspan="3">There are no recent reports of crimes in this area.</td>
+                    </tr>
+                    {% endif %}
                 </tbody>
             </table>
         </div>
