@@ -7,6 +7,7 @@ import datetime
 import xml.etree.ElementTree as ET
 from secret import ZWSID, GMAPS_API_KEY, DB_URL
 from math import radians, cos, sin, asin, sqrt, pi
+import ast
 from bs4 import BeautifulSoup
 
 def get_mongo_client():
@@ -205,9 +206,39 @@ def get_schools(lat, lng):
     if not items:
         return None
     items = [x for x in items]
-    out = []
+    schools = []
+    highlist = list()
+    high = ''
     for i in range(0, len(items), 2):
-        out.append({ "grade": items[i].text, "name": items[i + 1].text })
+        schools.append({ "grade": items[i].text, "name": items[i + 1].text })
+        if items[i].text[len(items[i].text - 2):len(items[i].text)] == '12':
+            highlist = items[i + 1].text.split(' ')
+            high = highlist[0] #check that this returns high school last name
+    #high = 'edison'
+    testing = json.load(open('jsondata/keystone.json'))
+    english = list()
+    math = list()
+    science = list()
+    for k in range(len(testing)):
+        curr = ast.literal_eval(testing[k])
+        if high.upper() in curr["school"]:
+            out.append({ "subject": 'english', })
+            english.append(curr["adv"])
+            english.append(curr["pro"])
+            english.append(curr["basic"])
+            english.append(curr["below"])
+            curr = ast.literal_eval(testing[k + 1])
+            math.append(curr["adv"])
+            math.append(curr["pro"])
+            math.append(curr["basic"])
+            math.append(curr["below"])
+            curr = ast.literal_eval(testing[k + 2])
+            science.append(curr["adv"])
+            science.append(curr["pro"])
+            science.append(curr["basic"])
+            science.append(curr["below"])
+            break
+    out = {'schools':schools, 'testing':{'english':english, 'math':math, 'science':science}}
     return out
 
 if __name__ == "__main__":
