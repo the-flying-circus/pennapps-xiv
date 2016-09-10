@@ -4,4 +4,5 @@
 
 DB_URL = "mongodb://user:qRaTNKHpg33utHdZhmVP3rXhtVJ3TrF7Nd5tztA2@ds019688.mlab.com:19688/homie"
 GMAPS_API_KEY = "AIzaSyDvNIS8JcGJ6HOB-EQYefrl_J82qDthDCA"
+GMAPS_EMBED_KEY = "AIzaSyC-JvENrp1A8grQ6j2B825vNj3FG7DHndU"
 ZWSID = "X1-ZWz19kxdvgpc0b_3jtqm"
