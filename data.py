@@ -20,9 +20,18 @@ def get_crimes(lat, lng):
     client.close()
     return [{ "coord": x["coord"], "type": x["type"], "time": x["time"].isoformat(), "dist": x["distance"]*3959 } for x in out]
 
+def get_crimes_and_collisions(lat, lng):
+    out = get_crimes(lat, lng)
+    for x in get_collisions(lat, lng):
+        out.append({ "coord": x["coord"], "type": "Car Accident", "time": datetime.datetime(x["year"], x["month"], 1).isoformat(), "dist": x["dist"] })
+    return out
+
 def get_collisions(lat, lng):
     client = get_mongo_client()
-    out = client.homie.collisions.aggregate([{ "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 10/3959, "spherical": True } }])
+    out = client.homie.collisions.aggregate([
+        { "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 10/3959, "spherical": True } },
+        { "$match": { "year": { "$gte": datetime.datetime.now().year - 3 } } }
+    ])
     client.close()
     return [{ "coord": x["coord"], "year": x["year"], "month": x["month"], "dist": x["distance"]*3959 } for x in out]
 
@@ -75,7 +84,7 @@ def split_from_geocode(data):
         out[next(x for x in part["types"] if x != "political")] = part["long_name"]
     try:
         return "{} {}".format(out["street_number"], out["route"]), "{}, {} {}".format(out["locality"] if "locality" in out else out["sublocality"], out["administrative_area_level_1"], out["postal_code"])
-    except KeyError:
+    except KeyError as e:
         return None, None
 
 def get_zillow_data(address, citystatezip, advanced=False):
