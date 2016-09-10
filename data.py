@@ -142,7 +142,7 @@ def get_overview_data(laddr, lzip):
 
 def get_public_services(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
-    data = get_nearby(loc["lat"], loc["lng"], building="hospital|library|book_store|post_office")
+    data = get_nearby(loc["lat"], loc["lng"], building="library|post_office|veterinary_care")
     out = []
     for x in data["results"][:10]:
         loc2 = x["geometry"]["location"]
@@ -189,10 +189,10 @@ def type_lookup(t):
         return "subway_station"
     if "library" in t:
         return "library"
-    if "book_store" in t:
-        return "book_store"
     if "post_office" in t:
         return "post_office"
+    if "veterinary_care" in t:
+        return "veterinary_care"
     if "park" in t:
         return "park"
     if "zoo" in t:
