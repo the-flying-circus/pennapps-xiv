@@ -5,6 +5,7 @@ import requests
 import secret
 import data
 import datetime
+import locale
 
 app = Flask(__name__, static_url_path="")
 app.secret_key = secret.SECRET_KEY
@@ -12,6 +13,11 @@ app.secret_key = secret.SECRET_KEY
 @app.template_filter()
 def format_date(t):
     return datetime.datetime.strptime(t, "%Y-%m-%dT%H:%M:%S").strftime("%r %D")
+
+@app.template_filter()
+def format_money(t):
+    locale.setlocale( locale.LC_ALL, '' )
+    return locale.currency(t, grouping=True)
 
 @app.route("/")
 def index():
@@ -25,26 +31,27 @@ def info():
     if geoinfo:
         laddr, lzip = data.split_from_geocode(geoinfo)
         if laddr and lzip:
-            place_id = request.args.get("place_id")
+            place_id = request.args.get("place_id", geoinfo["results"][0]["place_id"])
             loc = geoinfo["results"][0]["geometry"]["location"]
             lat = loc["lat"]
             lng = loc["lng"]
             try:
                 context = {"mapkey": secret.GMAPS_FRONT_KEY,
                            "place_id": place_id,
+                           "query": request.args.get("query"),
                            "overview": data.get_overview_data(laddr, lzip),
                            "taxes": data.get_tax_history(),
                            "neighborhood": data.get_neighborhood_data(),
                            "services": data.get_public_services(geoinfo),
                            "transportation": data.get_transportation(geoinfo),
-                           "crimes": data.get_crimes(lat, lng)
+                           "crimes": data.get_crimes_and_collisions(lat, lng)
                 }
-            except:
-                flash("Invalid address!")
+            except Exception as e:
+                flash("Error processing request: {}".format(e))
                 return redirect("/")
             return render_template("info.html", **context)
         else:
-            flash("Invalid address!")
+            flash("Invalid address! We could not geocode the address you provided.")
             return redirect("/")
     else:
         flash("Invalid address!")
