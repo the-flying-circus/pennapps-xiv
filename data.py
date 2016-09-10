@@ -23,7 +23,7 @@ def get_crimes(lat, lng):
 def get_crimes_and_collisions(lat, lng):
     out = get_crimes(lat, lng)[:10]
     for x in get_collisions(lat, lng)[:10]:
-        out.append({ "coord": x["coord"], "type": "Car Accident", "time": datetime.datetime(x["year"], x["month"], 1).isoformat(), "dist": x["dist"] })
+        out.append({ "coord": x["coord"], "type": "Car Accident", "time": datetime.datetime(x["year"], x["month"], 1).isoformat(), "dist": x["dist"], "car": True })
     out.sort(key=lambda k: k["dist"])
     return out
 
@@ -31,7 +31,7 @@ def get_collisions(lat, lng):
     client = get_mongo_client()
     out = client.homie.collisions.aggregate([
         { "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 10/3959, "spherical": True } },
-        { "$match": { "year": { "$gte": datetime.datetime.now().year - 3 } } }
+        { "$match": { "year": { "$gt": datetime.datetime.now().year - 3 } } }
     ])
     client.close()
     return [{ "coord": x["coord"], "year": x["year"], "month": x["month"], "dist": x["distance"]*3959 } for x in out]
