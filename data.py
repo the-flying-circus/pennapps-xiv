@@ -2,9 +2,25 @@
 
 import requests
 import json
+import pymongo
 import xml.etree.ElementTree as ET
-from secret import ZWSID, GMAPS_API_KEY
+from secret import ZWSID, GMAPS_API_KEY, DB_URL
 from math import radians, cos, sin, asin, sqrt
+
+def get_mongo_client():
+    return pymongo.MongoClient(DB_URL)
+
+def get_crimes(lat, lng):
+    client = get_mongo_client()
+    out = client.homie.crime.aggregate([{ "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 3959*10, "spherical": True } }])
+    client.close()
+    return [{ "coord": x["coord"], "type": x["type"], "time": x["time"].isoformat(), "dist": x["distance"] } for x in out]
+
+def get_collisions(lat, lng):
+    client = get_mongo_client()
+    out = client.homie.collisions.aggregate([{ "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 3959*10, "spherical": True } }])
+    client.close()
+    return [{ "coord": x["coord"], "year": x["year"], "month": x["month"], "dist": x["distance"] } for x in out]
 
 def haversine(lon1, lat1, lon2, lat2):
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
@@ -56,7 +72,7 @@ def split_from_geocode(data):
     try:
         return "{} {}".format(out["street_number"], out["route"]), "{}, {} {}".format(out["locality"] if "locality" in out else out["sublocality"], out["administrative_area_level_1"], out["postal_code"])
     except KeyError:
-        return None
+        return None, None
 
 def get_zillow_data(address, citystatezip, advanced=False):
     r = requests.post("https://www.zillow.com/webservice/GetDeepSearchResults.htm", data = {
@@ -87,9 +103,18 @@ def get_zillow_data(address, citystatezip, advanced=False):
             out["advanced_error"] = msg_code
     return out
 
-def get_overview_data():
-    out = {"address": "123 street", "beds": "2", "baths": "4", "area": "1000", "onsale": True, "zestimate": "100000", "refi": "4000"}
-    return out
+def get_overview_data(laddr, lzip):
+    data = get_zillow_data(laddr, lzip)
+    return {
+        "sqft": float(data["finishedSqFt"]),
+        "built": int(data["yearBuilt"]),
+        "zillow": data["links"]["homedetails"],
+        "address": data["address"],
+        "bedrooms": data["bedrooms"],
+        "bathrooms": data["bathrooms"],
+        "lastSold": data["lastSoldDate"],
+        "zestimate": float(data["zestimate"]["amount"])
+    }
 
 def get_tax_history():
     out = [{"year": "2016", "taxes": "100", "assessment": "101"}]
@@ -99,12 +124,30 @@ def get_neighborhood_data():
     out = {"median": "100000", "walkscore": "5"}
     return out
 
-def get_public_services():
-    out = [{"type": "library", "name": "the library", "dist": "2"}]
+def get_public_services(geoinfo):
+    loc = geoinfo["results"][0]["geometry"]["location"]
+    data = get_nearby(loc["lat"], loc["lng"], building="hospital")
+    out = []
+    for x in data["results"]:
+        loc2 = x["geometry"]["location"]
+        out.append({
+            "name": x["name"],
+            "type": ", ".join(x["types"]),
+            "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
+        })
     return out
 
-def get_transportation():
-    out = [{"type": "train", "name": "the station", "dist": "3"}]
+def get_transportation(geoinfo):
+    loc = geoinfo["results"][0]["geometry"]["location"]
+    data = get_nearby(loc["lat"], loc["lng"])
+    out = []
+    for x in data["results"]:
+        loc2 = x["geometry"]["location"]
+        out.append({
+            "name": x["name"],
+            "type": ", ".join(x["types"]),
+            "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
+        })
     return out
 
 if __name__ == "__main__":
@@ -115,4 +158,8 @@ if __name__ == "__main__":
     d = get_nearby(loc["lat"], loc["lng"])
     print(json.dumps(d, indent=4, sort_keys=True))
     d = get_zillow_data(laddr, lzip, advanced=True)
+    print(json.dumps(d, indent=4, sort_keys=True))
+    d = get_crimes(loc["lat"], loc["lng"])
+    print(json.dumps(d, indent=4, sort_keys=True))
+    d = get_collisions(loc["lat"], loc["lng"])
     print(json.dumps(d, indent=4, sort_keys=True))

@@ -28,3 +28,10 @@ body {
 .material-icons {
     line-height: inherit !important;
 }
+.alert {
+    padding: 15px;
+    background-color: #F44336;
+    color: white;
+    border-radius: 3px;
+    margin-top: 15px;
+}
