@@ -3,19 +3,24 @@
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" href="/css/index.css">
+    <script type="text/javascript" src="/js/index.js"></script>
 {% endblock %}
 
 {% block content %}
     {{ super() }}
-    <h1 id="welcome-text" class="center-align">Welcome to Homie.</h1>
-    <div class="row">
-        <form action="info">
-            <div class="input-field col s12 m10 offset-m1 l8 offset-l2">
-                <i class="material-icons prefix">search</i>
-                <input name="query" id="search" type="text" class="validate">
-                <label for="search">Search an address, neighborhood, city, or zip code</label>
+    <div id="welcome-wrapper">
+        <div id="welcome-div">
+            <h1 id="welcome-text" class="center-align">Welcome to Homie.</h1>
+            <div class="row">
+                <form action="info">
+                    <div class="input-field col s12 m10 offset-m1 l8 offset-l2">
+                        <i class="material-icons prefix">search</i>
+                        <input name="query" id="search" type="text" class="validate" required>
+                        <label for="search">Search an address, neighborhood, city, or zip code</label>
+                    </div>
+                    <input type="submit" class="hide">
+                </form>
             </div>
-            <input type="submit" class="hide">
-        </form>
+        </div>
     </div>
 {% endblock %}

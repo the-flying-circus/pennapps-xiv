@@ -1,7 +1,3 @@
-#welcome-text {
-    margin-top: 20vh;
-}
-
 .input-field input[type=text]:focus {
     border-bottom: 1px solid #2196f3;
 } 
