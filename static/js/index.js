@@ -52,7 +52,6 @@ if (!Array.prototype.includes) {
 function submitAddress() {
     var place = autocomplete.getPlace();
     if (place.types.includes("geocode") || place.types.includes("address") || place.types.includes("street_address")) {
-        start_preloader();
         window.location = "/info?place_id=" + encodeURIComponent(place.place_id) + "&query=" + encodeURIComponent($search.val());
     }
 }
