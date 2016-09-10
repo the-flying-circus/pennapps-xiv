@@ -21,7 +21,9 @@ $(document).ready(function() {
                     }
                 ]
             },
-            maintainAspectRatio: true
+            options: {
+                maintainAspectRatio: true
+            }
         });
     });
 });
