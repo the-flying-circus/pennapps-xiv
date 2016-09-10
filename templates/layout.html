@@ -7,8 +7,9 @@
         
         <!-- CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-        <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">        
+        <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 
         <!-- Scripts -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
@@ -21,5 +22,9 @@
                 <a class="brand-logo">Homie</a>
             </div>
         </nav>
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
     </body>
 </html>
