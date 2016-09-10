@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-
-<html>
-    <head>
-        <title>The index</title>
-    </head>
-
-    <body>
-        Hello, world.
-    </body>
-</html>
+{% extends "layout.html" %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="/css/index.css">
+{% endblock %}
