@@ -286,10 +286,9 @@ def get_schools(lat, lng):
     high = ''
     for i in range(0, len(items), 2):
         schools.append({ "grade": items[i].text, "name": items[i + 1].text })
-        if items[i]:
-            if int(items[i].text.strip()[-2:]) == 12:
-                highlist = items[i + 1].text.split(' ')
-                high = highlist[0] #check that this returns high school last name
+        if int(items[i].text.strip()[-2:]) == 12:
+            highlist = items[i + 1].text.split(",")
+            high = highlist[0] # check that this returns high school last name
     #high = 'edison'
     testing = json.load(open('jsondata/keystone.json'))
     english = list()
@@ -298,21 +297,23 @@ def get_schools(lat, lng):
     for k in range(len(testing)):
         curr = ast.literal_eval(testing[k])
         if high.upper() in curr["school"]:
-            out.append({ "subject": 'english', })
             english.append(curr["adv"])
             english.append(curr["pro"])
             english.append(curr["basic"])
             english.append(curr["below"])
+            english = [float(x) for x in english]
             curr = ast.literal_eval(testing[k + 1])
             math.append(curr["adv"])
             math.append(curr["pro"])
             math.append(curr["basic"])
             math.append(curr["below"])
+            math = [float(x) for x in math]
             curr = ast.literal_eval(testing[k + 2])
             science.append(curr["adv"])
             science.append(curr["pro"])
             science.append(curr["basic"])
             science.append(curr["below"])
+            science = [float(x) for x in science]
             break
     out = {
         "schools": schools,
