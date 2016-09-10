@@ -134,7 +134,7 @@
     <div class="card white">
         <div class="card-content">
             <span class="card-title">Family Entertainment</span>
-            {% if parks|length > 0 %}
+            {% if entertainment|length > 0 %}
             <table class="responsive-table">
                 <thead>
                     <tr>
@@ -166,6 +166,42 @@
             {% endif %}
         </div>
     </div>
+    <div class="card white">
+        <div class="card-content">
+            <span class="card-title">Emergency Services</span>
+            {% if emergency|length > 0 %}
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Distance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in emergency|crop_list %}
+                    <tr>
+                        {% if item.type == "fire_station" %}
+                        <td><i class="tiny material-icons">whatshot</i>&ensp;Fire Station</td>
+                        {% elif item.type == "hospital" %}
+                        <td><i class="tiny material-icons">local_hospital</i>&ensp;Hospital</td>
+                        {% elif item.type == "police" %}
+                        <td><i class="tiny material-icons">stars</i>&ensp;Police Station</td>
+                        {% else %}
+                        <td>{{ item.type|title }}</td>
+                        {% endif %}
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.dist|round(1) }} mi</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>There are no emergency services in this area.</p>
+            {% endif %}
+        </div>
+    </div>
+
 
     <div class="card white">
         <div class="card-content">
