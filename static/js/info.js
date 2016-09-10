@@ -6,7 +6,7 @@ $(document).ready(function() {
     var sr = ScrollReveal();
     sr.reveal(".property-img, .map, .card");
     $btn_collapse.sideNav({
-        menuWidth: 200
+        menuWidth: 240
     });
     $("#slide-out").click(function() {
         if ($window.width() <= 992)
