@@ -7,7 +7,12 @@
 .map {
     border: 0;
     height: 60vh;
+    min-height: 40vh;
     width: 100%;
+}
+
+@media (max-width: 500px) {
+    .property-img, .map { height: auto; }
 }
 
 .property-img, .map, .card {
