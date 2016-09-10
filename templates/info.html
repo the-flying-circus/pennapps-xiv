@@ -34,6 +34,7 @@
     <div class="card white">
         <div class="card-content">
             <span class="card-title">Public Services</span>
+            {% if services|length > 0 %}
             <table class="responsive-table">
                 <thead>
                     <tr>
@@ -60,18 +61,17 @@
                         <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
-                    {% if services|length == 0 %}
-                    <tr>
-                        <td colspan="3">There are no public services in this area.</td>
-                    </tr>
-                    {% endif %}
                 </tbody>
             </table>
+            {% else %}
+            <p>There are no public services in this area.</p>
+            {% endif %}
         </div>
     </div>
     <div class="card white">
         <div class="card-content">
             <span class="card-title">Public Transportation</span>
+            {% if transportation|length > 0 %}
             <table class="responsive-table">
                 <thead>
                     <tr>
@@ -94,18 +94,17 @@
                         <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
-                    {% if transportation|length == 0 %}
-                    <tr>
-                        <td colspan="3">There are no bus stops or subway stations in this area.</td>
-                    </tr>
-                    {% endif %}
                 </tbody>
             </table>
+            {% else %}
+            <p>There are no bus stops or subway stations in this area.</p>
+            {% endif %}
         </div>
     </div>
     <div class="card white">
         <div class="card-content">
             <span class="card-title">Crimes and Accidents</span>
+            {% if crimes|length > 0 %}
             <table class="responsive-table">
                 <thead>
                     <tr>
@@ -122,13 +121,11 @@
                         <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
-                    {% if crimes|length == 0 %}
-                    <tr>
-                        <td colspan="3">There are no recent reports of crimes in this area.</td>
-                    </tr>
-                    {% endif %}
                 </tbody>
             </table>
+            {% else %}
+            <p>There are no recent reports of crimes in this area.</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
