@@ -3,6 +3,7 @@
 import requests
 import json
 import pymongo
+import datetime
 import xml.etree.ElementTree as ET
 from secret import ZWSID, GMAPS_API_KEY, DB_URL
 from math import radians, cos, sin, asin, sqrt, pi
@@ -12,7 +13,10 @@ def get_mongo_client():
 
 def get_crimes(lat, lng):
     client = get_mongo_client()
-    out = client.homie.crime.aggregate([{ "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 10/3959, "spherical": True } }])
+    out = client.homie.crime.aggregate([
+        { "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 10/3959, "spherical": True } },
+        { "$match": { "time" : { "$gt": datetime.datetime.now() - datetime.timedelta(days=3*365) } } }
+    ])
     client.close()
     return [{ "coord": x["coord"], "type": x["type"], "time": x["time"].isoformat(), "dist": x["distance"]*3959 } for x in out]
 
@@ -47,7 +51,7 @@ def get_nearby(lat, lng, building="bus_station"):
         "key": GMAPS_API_KEY,
         "rankby": "distance",
         "location": "{},{}".format(lat, lng),
-        "type": building
+        "types": building
     })
     out = r.json()
     if out["status"] != "OK":
@@ -126,7 +130,7 @@ def get_neighborhood_data():
 
 def get_public_services(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
-    data = get_nearby(loc["lat"], loc["lng"], building="hospital")
+    data = get_nearby(loc["lat"], loc["lng"], building="hospital|library|book_store|post_office")
     out = []
     for x in data["results"]:
         loc2 = x["geometry"]["location"]
@@ -142,11 +146,19 @@ def type_lookup(t):
         return "hospital"
     if "bus_station" in t:
         return "bus_station"
+    if "subway_station" in t:
+        return "subway_station"
+    if "library" in t:
+        return "library"
+    if "book_store" in t:
+        return "book_store"
+    if "post_office" in t:
+        return "post_office"
     return ", ".join(t)
 
 def get_transportation(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
-    data = get_nearby(loc["lat"], loc["lng"])
+    data = get_nearby(loc["lat"], loc["lng"], building="bus_station|subway_station")
     out = []
     for x in data["results"]:
         loc2 = x["geometry"]["location"]
