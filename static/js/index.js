@@ -11,7 +11,9 @@ $(document).ready(function() {
 });
 
 function start_preloader() {
-    $(".preloader-wrapper").addClass("active");
+    $("#welcome-div .input-field").velocity({width: 0, opacity: 0.1}, {duration: 300, complete: function() {
+        $(".preloader-wrapper").addClass("active");
+    }});
 }
 
 if (!Array.prototype.includes) {
