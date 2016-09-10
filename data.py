@@ -21,9 +21,10 @@ def get_crimes(lat, lng):
     return [{ "coord": x["coord"], "type": x["type"], "time": x["time"].isoformat(), "dist": x["distance"]*3959 } for x in out]
 
 def get_crimes_and_collisions(lat, lng):
-    out = get_crimes(lat, lng)
-    for x in get_collisions(lat, lng):
+    out = get_crimes(lat, lng)[:10]
+    for x in get_collisions(lat, lng)[:10]:
         out.append({ "coord": x["coord"], "type": "Car Accident", "time": datetime.datetime(x["year"], x["month"], 1).isoformat(), "dist": x["dist"] })
+    out.sort(key=lambda k: k["dist"])
     return out
 
 def get_collisions(lat, lng):
