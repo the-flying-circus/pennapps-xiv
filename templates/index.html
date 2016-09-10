@@ -1,5 +1,18 @@
 {% extends "layout.html" %}
+
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" href="/css/index.css">
+{% endblock %}
+
+{% block content %}
+    {{ super() }}
+    <h1 id="welcome-text" class="center-align">Welcome to Homie.</h1>
+    <div class="row">
+        <div class="input-field col s12 m10 offset-m1 l8 offset-l2">
+            <i class="material-icons prefix">search</i>
+            <input id="search" type="text" class="validate">
+            <label for="search">Search an address, neighborhood, city, or zip code</label>
+        </div>
+    </div>
 {% endblock %}
