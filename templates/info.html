@@ -26,7 +26,7 @@
                 <ul class="col s12 m12 l6">
                     <li><strong>Zestimate<sup>&reg;</sup>:</strong>&ensp;{{ overview.zestimate|format_money }}</li>
                     <li><strong>Built:</strong>&ensp;{{ overview.built }}{% if overview.built %} ({{ current_year - overview.built }} years ago){% endif %}</li>
-                    <li><strong>Last Sold:</strong>&ensp;{{ overview.lastSold }}</li>
+                    <li><strong>Last Sold:</strong>&ensp;{{ overview.lastSold }}{% if overview.lastSold %} ({{ current_year - overview.lastSold|to_year}} years ago){% endif %}</li>
                     <li></li>
                 </ul>
             </div>

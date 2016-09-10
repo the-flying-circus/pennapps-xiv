@@ -23,6 +23,10 @@ def format_money(m):
 def crop_list(l):
     return l[:min(10, len(l))]
 
+@app.template_filter()
+def to_year(d):
+    return int(d.split("/")[-1])
+
 @app.route("/")
 def index():
     return render_template("index.html", mapskey=secret.GMAPS_FRONT_KEY)
