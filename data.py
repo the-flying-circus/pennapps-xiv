@@ -14,6 +14,16 @@ def xml_to_dict(xml):
             out[x.tag] = x.text
     return out
 
+# other values: https://developers.google.com/places/supported_types
+def get_nearby(lat, lng, building="bus_station"):
+    r = requests.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json", params = {
+        "key": GMAPS_API_KEY,
+        "rankby": "distance",
+        "location": "{},{}".format(lat, lng),
+        "type": building
+    })
+    return r.json()
+
 def geocode(address):
     r = requests.get("https://maps.googleapis.com/maps/api/geocode/json", params = {
         "key": GMAPS_API_KEY,
@@ -63,6 +73,9 @@ def get_zillow_data(address, citystatezip, advanced=False):
 if __name__ == "__main__":
     d = geocode("4224 N Fairhill St, Philadelphia, PA 19140")
     print(json.dumps(d, indent=4, sort_keys=True))
+    loc = d["results"][0]["geometry"]["location"]
     laddr, lzip = split_from_geocode(d)
+    d = get_nearby(loc["lat"], loc["lng"])
+    print(json.dumps(d, indent=4, sort_keys=True))
     d = get_zillow_data(laddr, lzip, advanced=True)
     print(json.dumps(d, indent=4, sort_keys=True))
