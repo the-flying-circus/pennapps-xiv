@@ -1,2 +1,2 @@
 # PennApps XIV Submission
-## Susanna Bradbury, Eric Wang, and Charles Zhao
+### Susanna Bradbury, Eric Wang, and Charles Zhao
