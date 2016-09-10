@@ -22,7 +22,7 @@
             <div class="row">
                 <ul class="col s12 m12 l6">
                     <li><strong>{{ overview.address.street }}<br>{{ overview.address.city }}, {{ overview.address.state }} {{ overview.address.zipcode }}</strong></li>
-                    <li><strong>{{ overview.bedrooms }} beds&ensp;-&ensp;{{ overview.bathrooms }} baths&ensp;-&ensp;{{ overview.sqft }} ft<sup>2</sup></strong></li>
+                    <li><strong>{% if overview.bedrooms %}{{ overview.bedrooms }} beds&ensp;-&ensp;{% endif %}{% if overview.bathrooms %}{{ overview.bathrooms }} baths&ensp;-&ensp;{% endif %}{{ overview.sqft }} ft<sup>2</sup></strong></li>
                 </ul>
                 <ul class="col s12 m12 l6">
                     <li><strong>Zestimate<sup>&reg;</sup>:</strong>&ensp;{{ overview.zestimate|format_money }}</li>
