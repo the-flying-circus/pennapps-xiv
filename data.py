@@ -112,7 +112,7 @@ def get_overview_data(laddr, lzip):
         "address": data["address"],
         "bedrooms": data["bedrooms"],
         "bathrooms": data["bathrooms"],
-        "lastSold": data["lastSoldDate"],
+        "lastSold": data.get("lastSoldDate", None),
         "zestimate": float(data["zestimate"]["amount"])
     }
 
