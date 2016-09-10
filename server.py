@@ -63,10 +63,10 @@ def info():
                 return redirect("/")
             return render_template("info.html", **context)
         else:
-            flash("Invalid address! We could not geocode the address you provided.")
+            flash("Invalid address! We could not find a street address for the location you provided.")
             return redirect("/")
     else:
-        flash("Invalid address!")
+        flash("Invalid address! We could not geocode the address you provided.")
         return redirect("/")
 
 if __name__ == "__main__":
