@@ -17,9 +17,13 @@ def info():
     geoinfo = data.geocode(address)
     if geoinfo:
         laddr, lzip = data.split_from_geocode(geoinfo)
+        loc = geoinfo["results"][0]["geometry"]["location"]
+        lat = loc["lat"]
+        lng = loc["lng"]
         if laddr and lzip:
             context = {"overview": data.get_overview_data(laddr, lzip),
                        "taxes": data.get_tax_history(),
+                       "crimes": data.get_crimes(lat, lng),
                        "neighborhood": data.get_neighborhood_data(),
                        "services": data.get_public_services(geoinfo),
                        "transportation": data.get_transportation(geoinfo),
