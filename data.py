@@ -170,11 +170,12 @@ def get_transportation(geoinfo):
     return out
     
 def get_census(address):
-    r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/onelineaddress", params = {
+    r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/onelineaddress/", params = {
         "address": address,
         "benchmark": "Public_AR_Current",
         "format": "json"
     })
+    print(r.text)
     out = r.json()
     
 def get_schools(lat, lng):
@@ -184,7 +185,8 @@ def get_schools(lat, lng):
     
 
 if __name__ == "__main__":
-    d = geocode("4224 N Fairhill St, Philadelphia, PA 19140")
+    rawadd = "4224 N Fairhill St, Philadelphia, PA 19140"
+    d = geocode(rawadd)
     print(json.dumps(d, indent=4, sort_keys=True))
     loc = d["results"][0]["geometry"]["location"]
     laddr, lzip = split_from_geocode(d)
@@ -196,6 +198,6 @@ if __name__ == "__main__":
     print(json.dumps(d, indent=4, sort_keys=True))
     d = get_collisions(loc["lat"], loc["lng"])
     print(json.dumps(d, indent=4, sort_keys=True))
-    d = get_census(laddr)
+    d = get_census(rawadd)
     print(json.dumps(d, indent=4, sort_keys=True))
     get_schools(loc["lat"], loc["lng"])
