@@ -88,23 +88,23 @@ def get_zillow_data(address, citystatezip, advanced=False):
     return out
 
 def get_overview_data():
-    out = {"address": "123 street", "beds": 2, "baths": 4, "area": 1000, "onsale": True, "zestimate": 100000, "refi": 4000}
+    out = {"address": "123 street", "beds": "2", "baths": "4", "area": "1000", "onsale": True, "zestimate": "100000", "refi": "4000"}
     return out
 
 def get_tax_history():
-    out = {"year": [2016], "taxes": [100], "assessment": [101]}
+    out = [{"year": "2016", "taxes": "100", "assessment": "101"}]
     return out
 
 def get_neighborhood_data():
-    out = {"median": 100000, "walkscore": 5}
+    out = {"median": "100000", "walkscore": "5"}
     return out
 
 def get_public_services():
-    out = [{"type": "library", "name": "the library", "dist": 2}]
+    out = [{"type": "library", "name": "the library", "dist": "2"}]
     return out
 
 def get_transportation():
-    out = [{"type": "train", "name": "the station", "dist": 3}]
+    out = [{"type": "train", "name": "the station", "dist": "3"}]
     return out
 
 if __name__ == "__main__":
