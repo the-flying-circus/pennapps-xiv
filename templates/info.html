@@ -18,16 +18,17 @@
         <div class="col s12 m12 l6"><iframe class="map" src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ place_id }}&key={{ mapkey }}" allowfullscreen></iframe></div>
     </div>
     <div class="card white overview">
-        <div class="card-content">
+        <div class="card-content" style="position: relative">
             <span class="card-title">Overview</span>
             <ul>
                 <li><strong>{{ overview.address.street }}<br>{{ overview.address.city }}, {{ overview.address.state }} {{ overview.address.zipcode }}</strong></li>
                 <li><strong>{{ overview.bedrooms }} beds - {{ overview.bathrooms }} baths - {{ overview.sqft }} ft<sup>2</sup></strong></li>
-                <li><strong>Zestimate&reg;:</strong> {{ overview.zestimate|format_money }}</li>
+                <li><strong>Zestimate<sup>&reg;</sup>:</strong> {{ overview.zestimate|format_money }}</li>
                 <li><strong>Built:</strong> {{ overview.built }}</li>
                 <li><strong>Last Sold:</strong> {{ overview.lastSold }}</li>
                 <li><a href="{{ overview.zillow }}" target="_blank">More details on Zillow</a></li>
             </ul>
+            <img src="img/zillow.png" title="Provided by Zillow" style="position: absolute; bottom: 25px; right: 0px" />
         </div>
     </div>
     <div class="card white">

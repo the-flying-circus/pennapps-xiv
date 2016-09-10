@@ -2,6 +2,7 @@
 # Use a tool to remove it completely and force push.
 # Add an secret.py.example file with necessary fields.
 
+CENSUS_API_KEY = "5412d1e71785f83a08c648ca56658ff8068e7872"
 SECRET_KEY = "Uz8tPRWQYFrjCM2rcMXQhaxtBLSMtc8jJRvsPgWdzqtadgWhQDDhbYWuB"
 DB_URL = "mongodb://user:qRaTNKHpg33utHdZhmVP3rXhtVJ3TrF7Nd5tztA2@ds019688.mlab.com:19688/homie"
 GMAPS_API_KEY = "AIzaSyDvNIS8JcGJ6HOB-EQYefrl_J82qDthDCA"
