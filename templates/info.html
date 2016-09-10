@@ -85,14 +85,32 @@
                 <div class="col s8 offset-s2 m4 l4">
                     <h5>Mathematics</h5>
                     <canvas width="200" height="200" id="chart-math"></canvas>
+                    {% if schools.testing.math[3] > 0.20 %}
+                    <p class="red">Below Average</p>
+                    {% else %}
+                    <p class="green">Above Average</p>
+                    {% endif %}
+                    <p class="small">Statewide: 80.0%, School: {{ (100 - schools.testing.math[3])|round(1) }}%</p>
                 </div>
                 <div class="col s8 offset-s2 m4 l4">
                     <h5>Science</h5>
                     <canvas width="200" height="200" id="chart-science"></canvas>
+                    {% if schools.testing.science[3] > 0.317 %}
+                    <p class="red">Below Average</p>
+                    {% else %}
+                    <p class="green">Above Average</p>
+                    {% endif %}
+                    <p class="small">Statewide: 68.3%, School: {{ (100 - schools.testing.science[3])|round(1) }}%</p>
                 </div>
                 <div class="col s8 offset-s2 m4 l4">
                     <h5>English</h5>
                     <canvas width="200" height="200" id="chart-english"></canvas>
+                    {% if schools.testing.english[3] > 0.186 %}
+                    <p class="red">Below Average</p>
+                    {% else %}
+                    <p class="green">Above Average</p>
+                    {% endif %}
+                    <p class="small">Statewide: 81.4%, School: {{ (100 - schools.testing.english[3])|round(1) }}%</p>
                 </div>
             </div>
             <p id="school-data" style="display:none">{{ schools.testing|tojson }}</p>
