@@ -165,7 +165,21 @@ def get_parks(geoinfo):
             "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
         })
     return out
-            
+
+def get_entertainment(geoinfo):
+    loc = geoinfo["results"][0]["geometry"]["location"]
+    data = get_nearby(loc["lat"], loc["lng"], building="amusement_park|aquarium|art_gallery|movie_theater|museum")
+    out = []
+    for x in data["results"][:10]:
+        loc2 = x["geometry"]["location"]
+        out.append({
+            "name": x["name"],
+            "type": type_lookup(x["types"]),
+            "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
+        })
+    return out
+
+
 def type_lookup(t):
     if "hospital" in t:
         return "hospital"
@@ -185,6 +199,12 @@ def type_lookup(t):
         return "zoo"
     if "campground" in t:
         return "campground"
+    if "amusement_park" in t:
+        return "amusement_park"
+    if "museum" in t or "art_gallery" in t or "aquarium" in t:
+        return "exhibit"
+    if "movie_theater" in t:
+        return "movie_theater"
     return ", ".join(t)
 
 def get_transportation(geoinfo):
