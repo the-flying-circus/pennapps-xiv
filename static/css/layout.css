@@ -17,17 +17,14 @@ body {
     border-bottom: 1px solid #2196f3;
 } 
 
-.input-field input[type=text]:focus + label {
-    color: #2196f3;
-}
-
-.input-field .prefix.active {
+.input-field input[type=text]:focus + label, .input-field .prefix.active {
     color: #2196f3;
 }
 
 .material-icons {
     line-height: inherit !important;
 }
+
 .alert {
     padding: 15px;
     background-color: #F44336;
