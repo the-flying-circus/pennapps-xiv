@@ -1,6 +1,13 @@
+.property-img {
+    height: 60vh;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
 .map {
     border: 0;
-    max-height: 60vh;
+    height: 60vh;
+    width: 100%;
 }
 
 .card li {

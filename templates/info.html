@@ -13,7 +13,10 @@
 
 {% block content %}
     {{ super() }}
-    <iframe class="map col s12 m12 l12 offset-l2" src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ place_id }}&key={{ mapkey }}" allowfullscreen></iframe>
+    <div class="row">
+        <div class="col s12 m12 l6"><img class="property-img" src="https://maps.googleapis.com/maps/api/streetview?location={{ query }}&size=350x300&key={{ mapkey }}" alt="property image"></div>
+        <div class="col s12 m12 l6"><iframe class="map" src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ place_id }}&key={{ mapkey }}" allowfullscreen></iframe></div>
+    </div>
     <div class="card white overview">
         <div class="card-content">
             <span class="card-title">Overview</span>
