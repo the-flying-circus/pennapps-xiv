@@ -5,6 +5,7 @@ import requests
 import secret
 import data
 import datetime
+import locale
 
 app = Flask(__name__, static_url_path="")
 app.secret_key = secret.SECRET_KEY
@@ -12,6 +13,11 @@ app.secret_key = secret.SECRET_KEY
 @app.template_filter()
 def format_date(t):
     return datetime.datetime.strptime(t, "%Y-%m-%dT%H:%M:%S").strftime("%r %D")
+
+@app.template_filter()
+def format_money(t):
+    locale.setlocale( locale.LC_ALL, '' )
+    return locale.currency(t, grouping=True)
 
 @app.route("/")
 def index():
