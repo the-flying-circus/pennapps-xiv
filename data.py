@@ -56,7 +56,7 @@ def split_from_geocode(data):
     try:
         return "{} {}".format(out["street_number"], out["route"]), "{}, {} {}".format(out["locality"] if "locality" in out else out["sublocality"], out["administrative_area_level_1"], out["postal_code"])
     except KeyError:
-        return None
+        return None, None
 
 def get_zillow_data(address, citystatezip, advanced=False):
     r = requests.post("https://www.zillow.com/webservice/GetDeepSearchResults.htm", data = {
