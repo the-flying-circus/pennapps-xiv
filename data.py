@@ -3,7 +3,7 @@
 import requests
 import json
 import xml.etree.ElementTree as ET
-from secret import ZWSID
+from secret import ZWSID, GMAPS_API_KEY
 
 def xml_to_dict(xml):
     out = {}
@@ -13,6 +13,23 @@ def xml_to_dict(xml):
         else:
             out[x.tag] = x.text
     return out
+
+def geocode(address):
+    r = requests.get("https://maps.googleapis.com/maps/api/geocode/json", params = {
+        "key": GMAPS_API_KEY,
+        "address": address
+    })
+    return r.json()
+
+def split_from_geocode(data):
+    parts = data["results"][0]["address_components"]
+    out = {}
+    for part in parts:
+        out[next(x for x in part["types"] if x != "political")] = part["long_name"]
+    try:
+        return "{} {}".format(out["street_number"], out["route"]), "{}, {} {}".format(out["locality"] if "locality" in out else out["sublocality"], out["administrative_area_level_1"], out["postal_code"])
+    except KeyError:
+        return None
 
 def get_zillow_data(address, citystatezip, advanced=False):
     r = requests.post("https://www.zillow.com/webservice/GetDeepSearchResults.htm", data = {
@@ -44,5 +61,8 @@ def get_zillow_data(address, citystatezip, advanced=False):
     return out
 
 if __name__ == "__main__":
-    d = get_zillow_data("4224 N Fairhill St", "Philadelphia, PA 19140", advanced=True)
+    d = geocode("4224 N Fairhill St, Philadelphia, PA 19140")
+    print(json.dumps(d, indent=4, sort_keys=True))
+    laddr, lzip = split_from_geocode(d)
+    d = get_zillow_data(laddr, lzip, advanced=True)
     print(json.dumps(d, indent=4, sort_keys=True))
