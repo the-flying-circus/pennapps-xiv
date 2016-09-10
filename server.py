@@ -29,15 +29,19 @@ def info():
             loc = geoinfo["results"][0]["geometry"]["location"]
             lat = loc["lat"]
             lng = loc["lng"]
-            context = {"mapkey": secret.GMAPS_FRONT_KEY,
-                       "place_id": place_id,
-                       "overview": data.get_overview_data(laddr, lzip),
-                       "taxes": data.get_tax_history(),
-                       "neighborhood": data.get_neighborhood_data(),
-                       "services": data.get_public_services(geoinfo),
-                       "transportation": data.get_transportation(geoinfo),
-                       "crimes": data.get_crimes(lat, lng)
-            }
+            try:
+                context = {"mapkey": secret.GMAPS_FRONT_KEY,
+                           "place_id": place_id,
+                           "overview": data.get_overview_data(laddr, lzip),
+                           "taxes": data.get_tax_history(),
+                           "neighborhood": data.get_neighborhood_data(),
+                           "services": data.get_public_services(geoinfo),
+                           "transportation": data.get_transportation(geoinfo),
+                           "crimes": data.get_crimes(lat, lng)
+                }
+            except:
+                flash("Invalid address!")
+                return redirect("/")
             return render_template("info.html", **context)
         else:
             flash("Invalid address!")
