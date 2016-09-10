@@ -7,6 +7,7 @@ import datetime
 import xml.etree.ElementTree as ET
 from secret import ZWSID, GMAPS_API_KEY, DB_URL
 from math import radians, cos, sin, asin, sqrt, pi
+from bs4 import BeautifulSoup
 
 def get_mongo_client():
     return pymongo.MongoClient(DB_URL)
@@ -197,9 +198,15 @@ def get_census(address):
     
 def get_schools(lat, lng):
     r = requests.get("https://webapps.philasd.org/school_finder/ajax/pip/" + str(lat) + '/' + str(lng))
-    print(r.text)
-    #extract school info
-    
+    soup = BeautifulSoup(r.text, "html.parser")
+    items = soup.find("dl")
+    if not items:
+        return None
+    items = [x for x in items]
+    out = []
+    for i in range(0, len(items), 2):
+        out.append({ "grade": items[i].text, "name": items[i + 1].text })
+    return out
 
 if __name__ == "__main__":
     rawadd = "4224 N Fairhill St, Philadelphia, PA 19140"
@@ -207,14 +214,15 @@ if __name__ == "__main__":
     print(json.dumps(d, indent=4, sort_keys=True))
     loc = d["results"][0]["geometry"]["location"]
     laddr, lzip = split_from_geocode(d)
-    d = get_nearby(loc["lat"], loc["lng"])
+    # d = get_nearby(loc["lat"], loc["lng"])
+    # print(json.dumps(d, indent=4, sort_keys=True))
+    # d = get_zillow_data(laddr, lzip, advanced=True)
+    # print(json.dumps(d, indent=4, sort_keys=True))
+    # d = get_crimes(loc["lat"], loc["lng"])
+    # print(json.dumps(d, indent=4, sort_keys=True))
+    # d = get_collisions(loc["lat"], loc["lng"])
+    # print(json.dumps(d, indent=4, sort_keys=True))
+    # d = get_census(rawadd)
+    # print(json.dumps(d, indent=4, sort_keys=True))
+    d = get_schools(loc["lat"], loc["lng"])
     print(json.dumps(d, indent=4, sort_keys=True))
-    d = get_zillow_data(laddr, lzip, advanced=True)
-    print(json.dumps(d, indent=4, sort_keys=True))
-    d = get_crimes(loc["lat"], loc["lng"])
-    print(json.dumps(d, indent=4, sort_keys=True))
-    d = get_collisions(loc["lat"], loc["lng"])
-    print(json.dumps(d, indent=4, sort_keys=True))
-    d = get_census(rawadd)
-    print(json.dumps(d, indent=4, sort_keys=True))
-    get_schools(loc["lat"], loc["lng"])

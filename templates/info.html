@@ -36,6 +36,30 @@
             <img src="img/zillow.png" title="Provided by Zillow" class="zillow-img" />
         </div>
     </div>
+    <div class="card white overview">
+        <div class="card-content">
+            <span class="card-title">Schools</span>
+            {% if schools %}
+                <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>Grade</th>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for school in schools %}
+                <tr>
+                    <td>{{ school.grade }}</td><td>{{ school.name }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+            {% else %}
+            No schools were found in this area.
+            {% endif %}
+        </div>
+    </div>
     <div class="card white">
         <div class="card-content">
             <span class="card-title">Public Services</span>
