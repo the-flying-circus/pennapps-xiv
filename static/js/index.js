@@ -11,6 +11,7 @@ $(document).ready(function() {
 
     $("#search-form").submit(function(e) {
         start_preloader();
+        $("#search-form .input-field").blur();
     });
 });
 
@@ -55,10 +56,5 @@ if (!Array.prototype.includes) {
 
 function submitAddress() {
     var place = autocomplete.getPlace();
-    if (place.types.includes("geocode") || place.types.includes("address") || place.types.includes("street_address")) {
-        $("#search-form").submit();
-    }
-    else {
-        console.log("invalid place: " + place.types);
-    }
+    $("#search-form").submit();
 }
