@@ -2,8 +2,11 @@
 
 from flask import *
 import requests
+import secret
+import data
 
 app = Flask(__name__, static_url_path="")
+app.secret_key = secret.SECRET_KEY
 
 @app.route("/")
 def index():
@@ -13,21 +16,26 @@ def index():
 def info():
     address = request.args.get("query")
     import data, secret
-    laddr, lzip = data.split_from_geocode(data.geocode(address))
-    r = requests.get("https://maps.googleapis.com/maps/api/place/textsearch/json", params = {
-        "query": address,
-        "key": secret.GMAPS_PLACES_KEY
-    })
-    place_id = r.json()["results"][0]["place_id"]
-    context = {"mapkey": secret.GMAPS_EMBED_KEY,
-               "place_id": place_id,
-               "overview": data.get_overview_data(),
-               "taxes": data.get_tax_history(),
-               "neighborhood": data.get_neighborhood_data(),
-               "services": data.get_public_services(),
-               "transportation": data.get_transportation(),
-    }
-    return render_template("info.html", **context)
+    geoinfo = data.geocode(address)
+    laddr, lzip = data.split_from_geocode(geoinfo)
+    if laddr and lzip:
+        r = requests.get("https://maps.googleapis.com/maps/api/place/textsearch/json", params = {
+            "query": address,
+            "key": secret.GMAPS_PLACES_KEY
+        })
+        place_id = r.json()["results"][0]["place_id"]
+        context = {"mapkey": secret.GMAPS_EMBED_KEY,
+                   "place_id": place_id,
+                   "overview": data.get_overview_data(laddr, lzip),
+                   "taxes": data.get_tax_history(),
+                   "neighborhood": data.get_neighborhood_data(),
+                   "services": data.get_public_services(geoinfo),
+                   "transportation": data.get_transportation(geoinfo),
+        }
+        return render_template("info.html", **context)
+    else:
+        flash("Invalid address!")
+        return redirect("/")
 
 if __name__ == "__main__":
     import sys
