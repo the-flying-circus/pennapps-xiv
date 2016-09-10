@@ -3,6 +3,7 @@
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" href="/css/index.css">
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ mapskey }}&libraries=places"></script>
     <script type="text/javascript" src="/js/index.js"></script>
 {% endblock %}
 
@@ -15,8 +16,8 @@
                 <form action="info">
                     <div class="input-field col s12 m10 offset-m1 l8 offset-l2">
                         <i class="material-icons prefix">search</i>
-                        <input name="query" id="search" type="text" class="validate" required>
-                        <label for="search">Search an address</label>
+                        <input name="query" id="search" type="text" placeholder="" class="validate" required>
+                        <label for="search">Enter a location</label>
                     </div>
                     <input type="submit" class="hide">
                 </form>
