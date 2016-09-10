@@ -13,7 +13,7 @@ $(document).ready(function() {
             $btn_collapse.sideNav("hide");
     });
     $(".scrollspy").scrollSpy({
-        scrollOffset: 20
+        scrollOffset: 80
     });
     var chart_data = JSON.parse($("#school-data").text());
     $.each(["math", "science", "english"], function(k, v) {
