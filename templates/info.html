@@ -3,6 +3,12 @@
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" href="/css/info.css">
+    <script type="text/javascript" src="/js/jquery.timeago.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $(".timeago").timeago();
+    });
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -30,9 +36,13 @@
                 <tbody>
                     {% for item in services %}
                     <tr>
-                        <td>{{ item.type }}</td>
+                        {% if item.type == "hospital" %}
+                        <td><i class="tiny material-icons">local_hospital</i> Hospital</td>
+                        {% else %}
+                        <td>{{ item.type|title }}</td>
+                        {% endif %}
                         <td>{{ item.name }}</td>
-                        <td>{{ item.dist }}</td>
+                        <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -53,9 +63,13 @@
                 <tbody>
                     {% for item in transportation %}
                     <tr>
-                        <td>{{ item.type }}</td>
+                        {% if item.type == "bus_station" %}
+                        <td><i class="tiny material-icons">directions_bus</i> Bus Stop</td>
+                        {% else %}
+                        <td>{{ item.type|title }}</td>
+                        {% endif %}
                         <td>{{ item.name }}</td>
-                        <td>{{ item.dist }}</td>
+                        <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -77,8 +91,8 @@
                     {% for item in crimes %}
                     <tr>
                         <td>{{ item.type }}</td>
-                        <td>{{ item.time }}</td>
-                        <td>{{ item.dist }}</td>
+                        <td class="timeago" title="{{ item.time }}">{{ item.time|format_date }}</td>
+                        <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
                 </tbody>

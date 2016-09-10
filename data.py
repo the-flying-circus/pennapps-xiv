@@ -5,31 +5,31 @@ import json
 import pymongo
 import xml.etree.ElementTree as ET
 from secret import ZWSID, GMAPS_API_KEY, DB_URL
-from math import radians, cos, sin, asin, sqrt
+from math import radians, cos, sin, asin, sqrt, pi
 
 def get_mongo_client():
     return pymongo.MongoClient(DB_URL)
 
 def get_crimes(lat, lng):
     client = get_mongo_client()
-    out = client.homie.crime.aggregate([{ "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 3959*10, "spherical": True } }])
+    out = client.homie.crime.aggregate([{ "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 10/3959, "spherical": True } }])
     client.close()
     return [{ "coord": x["coord"], "type": x["type"], "time": x["time"].isoformat(), "dist": x["distance"]*3959 } for x in out]
 
 def get_collisions(lat, lng):
     client = get_mongo_client()
-    out = client.homie.collisions.aggregate([{ "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 3959*10, "spherical": True } }])
+    out = client.homie.collisions.aggregate([{ "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 10/3959, "spherical": True } }])
     client.close()
     return [{ "coord": x["coord"], "year": x["year"], "month": x["month"], "dist": x["distance"]*3959 } for x in out]
 
 def haversine(lon1, lat1, lon2, lat2):
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
 
-    dlon = lon2 - lon1 
-    dlat = lat2 - lat1 
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
     a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
     c = 2 * asin(sqrt(a))
-    r = 3956
+    r = 3959
     return c * r
 
 def xml_to_dict(xml):
@@ -132,10 +132,17 @@ def get_public_services(geoinfo):
         loc2 = x["geometry"]["location"]
         out.append({
             "name": x["name"],
-            "type": ", ".join(x["types"]),
+            "type": type_lookup(x["types"]),
             "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
         })
     return out
+
+def type_lookup(t):
+    if "hospital" in t:
+        return "hospital"
+    if "bus_station" in t:
+        return "bus_station"
+    return ", ".join(t)
 
 def get_transportation(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
@@ -145,10 +152,19 @@ def get_transportation(geoinfo):
         loc2 = x["geometry"]["location"]
         out.append({
             "name": x["name"],
-            "type": ", ".join(x["types"]),
+            "type": type_lookup(x["types"]),
             "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
         })
     return out
+    
+def get_census(address):
+    r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/onelineaddress", params = {
+        "address": address,
+        "benchmark": "Public_AR_Current",
+        "format": "json"
+    })
+    out = r.json()
+    
 
 if __name__ == "__main__":
     d = geocode("4224 N Fairhill St, Philadelphia, PA 19140")
@@ -162,4 +178,6 @@ if __name__ == "__main__":
     d = get_crimes(loc["lat"], loc["lng"])
     print(json.dumps(d, indent=4, sort_keys=True))
     d = get_collisions(loc["lat"], loc["lng"])
+    print(json.dumps(d, indent=4, sort_keys=True))
+    d = get_census(laddr)
     print(json.dumps(d, indent=4, sort_keys=True))

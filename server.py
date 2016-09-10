@@ -4,9 +4,14 @@ from flask import *
 import requests
 import secret
 import data
+import datetime
 
 app = Flask(__name__, static_url_path="")
 app.secret_key = secret.SECRET_KEY
+
+@app.template_filter()
+def format_date(t):
+    return datetime.datetime.strptime(t, "%Y-%m-%dT%H:%M:%S").strftime("%r %D")
 
 @app.route("/")
 def index():
@@ -21,6 +26,9 @@ def info():
         laddr, lzip = data.split_from_geocode(geoinfo)
         if laddr and lzip:
             place_id = request.args.get("place_id")
+            loc = geoinfo["results"][0]["geometry"]["location"]
+            lat = loc["lat"]
+            lng = loc["lng"]
             context = {"mapkey": secret.GMAPS_FRONT_KEY,
                        "place_id": place_id,
                        "overview": data.get_overview_data(laddr, lzip),
@@ -28,6 +36,7 @@ def info():
                        "neighborhood": data.get_neighborhood_data(),
                        "services": data.get_public_services(geoinfo),
                        "transportation": data.get_transportation(geoinfo),
+                       "crimes": data.get_crimes(lat, lng)
             }
             return render_template("info.html", **context)
         else:
