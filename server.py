@@ -20,11 +20,10 @@ def info():
     if geoinfo:
         laddr, lzip = data.split_from_geocode(geoinfo)
         if laddr and lzip:
-            r = requests.get("https://maps.googleapis.com/maps/api/place/textsearch/json", params = {
-                "query": address,
-                "key": secret.GMAPS_PLACES_KEY
-            })
-            place_id = r.json()["results"][0]["place_id"]
+            loc = geoinfo["results"][0]["geometry"]["location"]
+            lat = loc["lat"]
+            lng = loc["lng"]
+            place_id = geoinfo["results"][0]["place_id"]
             context = {"mapkey": secret.GMAPS_EMBED_KEY,
                        "place_id": place_id,
                        "overview": data.get_overview_data(laddr, lzip),
@@ -32,6 +31,7 @@ def info():
                        "neighborhood": data.get_neighborhood_data(),
                        "services": data.get_public_services(geoinfo),
                        "transportation": data.get_transportation(geoinfo),
+                       "crimes": data.get_crimes(lat, lng)
             }
             return render_template("info.html", **context)
         else:
