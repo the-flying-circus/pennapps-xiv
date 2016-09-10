@@ -9,13 +9,28 @@
     <script type="text/javascript" src="/js/info.js"></script>
 {% endblock %}
 
+{% block nav %}
+    {{ super() }}
+    <ul id="slide-out" class="side-nav fixed">
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#schools">Schools</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#parks">Parks & Recreation</a></li>
+        <li><a href="#entertainment">Family Entertainment</a></li>
+        <li><a href="#emergency">Emergency Services</a></li>
+        <li><a href="#transportation">Public Transportation</a></li>
+        <li><a href="#crimes">Crimes & Accidents</a></li>
+    </ul>
+    <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+{% endblock %}
+
 {% block content %}
     {{ super() }}
     <div class="row">
         <div class="col s12 m12 l6"><img class="property-img" src="https://maps.googleapis.com/maps/api/streetview?location={{ lat }},{{ lng }}&size=350x300&key={{ mapkey }}" alt="property image"></div>
         <div class="col s12 m12 l6"><iframe class="map" src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ place_id }}&key={{ mapkey }}" allowfullscreen></iframe></div>
     </div>
-    <div class="card white overview">
+    <div id="overview" class="card white overview scrollspy">
         <div class="card-content" style="position: relative">
             <span class="card-title">Overview</span>
             {% if overview %}
@@ -38,7 +53,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="card white overview">
+    <div id="schools" class="card white scrollspy">
         <div class="card-content">
             <span class="card-title">Schools</span>
             {% if schools %}
@@ -63,7 +78,7 @@
         </div>
     </div>
     {% if schools and schools.testing.math %}
-    <div class="card white overview">
+    <div class="card white">
         <div class="card-content">
             <span class="card-title">Standardized Test Scores (High School)</span>
             <div id="row-charts" class="row">
@@ -84,7 +99,7 @@
         </div>
     </div>
     {% endif %}
-    <div class="card white">
+    <div id="services" class="card white scrollspy">
         <div class="card-content">
             <span class="card-title">Services</span>
             {% if services|length > 0 %}
@@ -119,7 +134,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="card white">
+    <div id="parks" class="card white scrollspy">
         <div class="card-content">
             <span class="card-title">Parks and Recreation</span>
             {% if parks|length > 0 %}
@@ -154,7 +169,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="card white">
+    <div id="entertainment" class="card white scrollspy">
         <div class="card-content">
             <span class="card-title">Family Entertainment</span>
             {% if entertainment|length > 0 %}
@@ -191,7 +206,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="card white">
+    <div id="emergency" class="card white scrollspy">
         <div class="card-content">
             <span class="card-title">Emergency Services</span>
             {% if emergency|length > 0 %}
@@ -226,9 +241,7 @@
             {% endif %}
         </div>
     </div>
-
-
-    <div class="card white">
+    <div id="transportation" class="card white scrollspy">
         <div class="card-content">
             <span class="card-title">Public Transportation</span>
             {% if transportation|length > 0 %}
@@ -265,7 +278,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="card white">
+    <div id="crimes" class="card white scrollspy">
         <div class="card-content">
             <span class="card-title">Crimes and Accidents</span>
             {% if crimes|length > 0 %}
