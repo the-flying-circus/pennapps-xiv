@@ -8,6 +8,10 @@ $(document).ready(function() {
     autocomplete = new google.maps.places.Autocomplete(document.getElementById("search"));
     autocomplete.setTypes(["address"]);
     autocomplete.addListener("place_changed", submitAddress);
+
+    $("#search-form").submit(function(e) {
+        start_preloader();
+    });
 });
 
 function start_preloader() {
