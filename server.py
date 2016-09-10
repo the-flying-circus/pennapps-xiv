@@ -10,7 +10,7 @@ app.secret_key = secret.SECRET_KEY
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", mapskey=secret.GMAPS_FRONT_KEY)
 
 @app.route("/info")
 def info():
@@ -20,12 +20,8 @@ def info():
     if geoinfo:
         laddr, lzip = data.split_from_geocode(geoinfo)
         if laddr and lzip:
-            r = requests.get("https://maps.googleapis.com/maps/api/place/textsearch/json", params = {
-                "query": address,
-                "key": secret.GMAPS_PLACES_KEY
-            })
-            place_id = r.json()["results"][0]["place_id"]
-            context = {"mapkey": secret.GMAPS_EMBED_KEY,
+            place_id = request.args.get("place_id")
+            context = {"mapkey": secret.GMAPS_FRONT_KEY,
                        "place_id": place_id,
                        "overview": data.get_overview_data(laddr, lzip),
                        "taxes": data.get_tax_history(),
