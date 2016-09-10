@@ -1,0 +1,12 @@
+#welcome-wrapper {
+    position: relative;
+    top: 20vh;
+}
+
+#welcome-div {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+}
