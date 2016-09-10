@@ -14,13 +14,13 @@ def get_crimes(lat, lng):
     client = get_mongo_client()
     out = client.homie.crime.aggregate([{ "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 3959*10, "spherical": True } }])
     client.close()
-    return [{ "coord": x["coord"], "type": x["type"], "time": x["time"].isoformat(), "dist": x["distance"] } for x in out]
+    return [{ "coord": x["coord"], "type": x["type"], "time": x["time"].isoformat(), "dist": x["distance"]*3959 } for x in out]
 
 def get_collisions(lat, lng):
     client = get_mongo_client()
     out = client.homie.collisions.aggregate([{ "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 3959*10, "spherical": True } }])
     client.close()
-    return [{ "coord": x["coord"], "year": x["year"], "month": x["month"], "dist": x["distance"] } for x in out]
+    return [{ "coord": x["coord"], "year": x["year"], "month": x["month"], "dist": x["distance"]*3959 } for x in out]
 
 def haversine(lon1, lat1, lon2, lat2):
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
@@ -112,7 +112,7 @@ def get_overview_data(laddr, lzip):
         "address": data["address"],
         "bedrooms": data["bedrooms"],
         "bathrooms": data["bathrooms"],
-        "lastSold": data["lastSoldDate"],
+        "lastSold": data.get("lastSoldDate", None),
         "zestimate": float(data["zestimate"]["amount"])
     }
 
