@@ -33,14 +33,20 @@ def get_nearby(lat, lng, building="bus_station"):
         "location": "{},{}".format(lat, lng),
         "type": building
     })
-    return r.json()
+    out = r.json()
+    if out["status"] != "OK":
+        raise Exception(out["status"])
+    return out
 
 def geocode(address):
     r = requests.get("https://maps.googleapis.com/maps/api/geocode/json", params = {
         "key": GMAPS_API_KEY,
         "address": address
     })
-    return r.json()
+    out = r.json()
+    if out["status"] != "OK":
+        raise Exception(out["status"])
+    return out
 
 def split_from_geocode(data):
     parts = data["results"][0]["address_components"]
