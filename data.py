@@ -145,8 +145,40 @@ def get_public_services(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
     data = get_nearby(loc["lat"], loc["lng"], building="library|post_office|veterinary_care")
     out = []
-    for x in data["results"][:10]:
+    types = {}
+    for x in data["results"][:20]:
         loc2 = x["geometry"]["location"]
+        t = type_lookup(x["types"])
+        if t in types:
+            if types[t] == 4: continue
+            types[t] += 1
+        else:
+            types[t] = 1
+        out.append({
+            "name": x["name"],
+            "type": t,
+            "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
+        })
+    return out
+
+def get_transportation(geoinfo):
+    loc = geoinfo["results"][0]["geometry"]["location"]
+    data = get_nearby(loc["lat"], loc["lng"], building="bus_station|subway_station|train_station|transit_station")
+    out = []
+    types = {}
+    already_exists = set()
+    for x in data["results"][:20]:
+        if x["name"] in already_exists:
+            continue
+        else:
+            already_exists.add(x["name"])
+        loc2 = x["geometry"]["location"]
+        t = type_lookup(x["types"])
+        if t in types:
+            if types[t] == 4: continue
+            types[t] += 1
+        else:
+            types[t] = 1
         out.append({
             "name": x["name"],
             "type": type_lookup(x["types"]),
@@ -158,11 +190,18 @@ def get_parks(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
     data = get_nearby(loc["lat"], loc["lng"], building="park|zoo|campground")
     out = []
-    for x in data["results"][:10]:
+    types = {}
+    for x in data["results"][:20]:
         loc2 = x["geometry"]["location"]
+        t = type_lookup(x["types"])
+        if t in types:
+            if types[t] == 4: continue
+            types[t] += 1
+        else:
+            types[t] = 1
         out.append({
             "name": x["name"],
-            "type": type_lookup(x["types"]),
+            "type": t,
             "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
         })
     return out
@@ -171,8 +210,15 @@ def get_entertainment(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
     data = get_nearby(loc["lat"], loc["lng"], building="amusement_park|aquarium|art_gallery|movie_theater|museum")
     out = []
-    for x in data["results"][:10]:
+    types = {}
+    for x in data["results"][:20]:
         loc2 = x["geometry"]["location"]
+        t = type_lookup(x["types"])
+        if t in types:
+            if types[t] == 3: continue
+            types[t] += 1
+        else:
+            types[t] = 1
         out.append({
             "name": x["name"],
             "type": type_lookup(x["types"]),
@@ -184,8 +230,15 @@ def get_emergency(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
     data = get_nearby(loc["lat"], loc["lng"], building="fire_station|hospital|police")
     out = []
-    for x in data["results"][:10]:
+    types = {}
+    for x in data["results"][:20]:
         loc2 = x["geometry"]["location"]
+        t = type_lookup(x["types"])
+        if t in types:
+            if types[t] == 4: continue
+            types[t] += 1
+        else:
+            types[t] = 1
         out.append({
             "name": x["name"],
             "type": type_lookup(x["types"]),
@@ -204,6 +257,10 @@ def type_lookup(t):
         return "bus_station"
     if "subway_station" in t:
         return "subway_station"
+    if "transit_station" in t:
+        return "transit_station"
+    if "train_station" in t:
+        return "train_station"
     if "library" in t:
         return "library"
     if "post_office" in t:
@@ -223,19 +280,6 @@ def type_lookup(t):
     if "movie_theater" in t:
         return "movie_theater"
     return ", ".join(t)
-
-def get_transportation(geoinfo):
-    loc = geoinfo["results"][0]["geometry"]["location"]
-    data = get_nearby(loc["lat"], loc["lng"], building="bus_station|subway_station")
-    out = []
-    for x in data["results"][:10]:
-        loc2 = x["geometry"]["location"]
-        out.append({
-            "name": x["name"],
-            "type": type_lookup(x["types"]),
-            "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
-        })
-    return out
     
 def get_census(address):
     r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/onelineaddress/", params = {
@@ -258,9 +302,9 @@ def get_schools(lat, lng):
     high = ''
     for i in range(0, len(items), 2):
         schools.append({ "grade": items[i].text, "name": items[i + 1].text })
-        if items[i].text[len(items[i].text - 2):len(items[i].text)] == '12':
-            highlist = items[i + 1].text.split(' ')
-            high = highlist[0] #check that this returns high school last name
+        if int(items[i].text.strip()[-2:]) == 12:
+            highlist = items[i + 1].text.split(",")
+            high = highlist[0] # check that this returns high school last name
     #high = 'edison'
     testing = json.load(open('jsondata/keystone.json'))
     english = list()
@@ -269,21 +313,23 @@ def get_schools(lat, lng):
     for k in range(len(testing)):
         curr = ast.literal_eval(testing[k])
         if high.upper() in curr["school"]:
-            out.append({ "subject": 'english', })
             english.append(curr["adv"])
             english.append(curr["pro"])
             english.append(curr["basic"])
             english.append(curr["below"])
+            english = [float(x) for x in english]
             curr = ast.literal_eval(testing[k + 1])
             math.append(curr["adv"])
             math.append(curr["pro"])
             math.append(curr["basic"])
             math.append(curr["below"])
+            math = [float(x) for x in math]
             curr = ast.literal_eval(testing[k + 2])
             science.append(curr["adv"])
             science.append(curr["pro"])
             science.append(curr["basic"])
             science.append(curr["below"])
+            science = [float(x) for x in science]
             break
     out = {
         "schools": schools,
@@ -311,5 +357,7 @@ if __name__ == "__main__":
     # print(json.dumps(d, indent=4, sort_keys=True))
     # d = get_census(rawadd)
     # print(json.dumps(d, indent=4, sort_keys=True))
-    d = get_schools(loc["lat"], loc["lng"])
-    print(json.dumps(d, indent=4, sort_keys=True))
+    # d = get_parks(d)
+    # print(json.dumps(d, indent=4, sort_keys=True))
+    # d = get_schools(loc["lat"], loc["lng"])
+    #print(json.dumps(d, indent=4, sort_keys=True))
