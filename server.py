@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from flask import *
+import requests
 
 app = Flask(__name__, static_url_path="")
 
@@ -11,9 +12,16 @@ def index():
 @app.route("/info")
 def info():
     address = request.args.get("query")
-    import data
+    import data, secret
     laddr, lzip = data.split_from_geocode(data.geocode(address))
-    context = {"overview": data.get_overview_data(),
+    r = requests.get("https://maps.googleapis.com/maps/api/place/textsearch/json", params = {
+        "query": address,
+        "key": secret.GMAPS_PLACES_KEY
+    })
+    place_id = r.json()["results"][0]["place_id"]
+    context = {"mapkey": secret.GMAPS_EMBED_KEY,
+               "place_id": place_id,
+               "overview": data.get_overview_data(),
                "taxes": data.get_tax_history(),
                "neighborhood": data.get_neighborhood_data(),
                "services": data.get_public_services(),
