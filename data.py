@@ -135,25 +135,56 @@ def get_overview_data(laddr, lzip):
         "built": int(data["yearBuilt"]),
         "zillow": data["links"]["homedetails"],
         "address": data["address"],
-        "bedrooms": data["bedrooms"],
-        "bathrooms": data["bathrooms"],
+        "bedrooms": data.get("bedrooms", None),
+        "bathrooms": data.get("bathrooms", None),
         "lastSold": data.get("lastSoldDate", None),
         "zestimate": float(data["zestimate"]["amount"])
     }
 
-def get_tax_history():
-    out = [{"year": "2016", "taxes": "100", "assessment": "101"}]
-    return out
-
-def get_neighborhood_data():
-    out = {"median": "100000", "walkscore": "5"}
-    return out
-
 def get_public_services(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
-    data = get_nearby(loc["lat"], loc["lng"], building="hospital|library|book_store|post_office")
+    data = get_nearby(loc["lat"], loc["lng"], building="library|post_office|veterinary_care")
     out = []
-    for x in data["results"][:15]:
+    for x in data["results"][:10]:
+        loc2 = x["geometry"]["location"]
+        out.append({
+            "name": x["name"],
+            "type": type_lookup(x["types"]),
+            "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
+        })
+    return out
+
+def get_parks(geoinfo):
+    loc = geoinfo["results"][0]["geometry"]["location"]
+    data = get_nearby(loc["lat"], loc["lng"], building="park|zoo|campground")
+    out = []
+    for x in data["results"][:10]:
+        loc2 = x["geometry"]["location"]
+        out.append({
+            "name": x["name"],
+            "type": type_lookup(x["types"]),
+            "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
+        })
+    return out
+
+def get_entertainment(geoinfo):
+    loc = geoinfo["results"][0]["geometry"]["location"]
+    data = get_nearby(loc["lat"], loc["lng"], building="amusement_park|aquarium|art_gallery|movie_theater|museum")
+    out = []
+    for x in data["results"][:10]:
+        loc2 = x["geometry"]["location"]
+        out.append({
+            "name": x["name"],
+            "type": type_lookup(x["types"]),
+            "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
+        })
+    return out
+
+def get_emergency(geoinfo):
+    loc = geoinfo["results"][0]["geometry"]["location"]
+    data = get_nearby(loc["lat"], loc["lng"], building="fire_station|hospital|police")
+    out = []
+    for x in data["results"][:10]:
         loc2 = x["geometry"]["location"]
         out.append({
             "name": x["name"],
@@ -165,16 +196,32 @@ def get_public_services(geoinfo):
 def type_lookup(t):
     if "hospital" in t:
         return "hospital"
+    if "fire_station" in t:
+        return "fire_station"
+    if "police" in t:
+        return "police"
     if "bus_station" in t:
         return "bus_station"
     if "subway_station" in t:
         return "subway_station"
     if "library" in t:
         return "library"
-    if "book_store" in t:
-        return "book_store"
     if "post_office" in t:
         return "post_office"
+    if "veterinary_care" in t:
+        return "veterinary_care"
+    if "park" in t:
+        return "park"
+    if "zoo" in t:
+        return "zoo"
+    if "campground" in t:
+        return "campground"
+    if "amusement_park" in t:
+        return "amusement_park"
+    if "museum" in t or "art_gallery" in t or "aquarium" in t:
+        return "exhibit"
+    if "movie_theater" in t:
+        return "movie_theater"
     return ", ".join(t)
 
 def get_transportation(geoinfo):

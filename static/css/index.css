@@ -3,6 +3,10 @@
     top: 15vh;
 }
 
+@media (max-width: 500px) {
+    #welcome-wrapper { top: 5vh; }
+}
+
 #welcome-div {
     position: absolute;
     top: 20px;
