@@ -23,6 +23,7 @@ body {
 
 .material-icons {
     line-height: inherit !important;
+    vertical-align: top;
 }
 
 .alert {
