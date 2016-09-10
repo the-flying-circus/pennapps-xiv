@@ -2,9 +2,25 @@
 
 import requests
 import json
+import pymongo
 import xml.etree.ElementTree as ET
-from secret import ZWSID, GMAPS_API_KEY
+from secret import ZWSID, GMAPS_API_KEY, DB_URL
 from math import radians, cos, sin, asin, sqrt
+
+def get_mongo_client():
+    return pymongo.MongoClient(DB_URL)
+
+def get_crimes(lat, lng):
+    client = get_mongo_client()
+    out = client.homie.crime.aggregate([{ "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 3959*10, "spherical": True } }])
+    client.close()
+    return [{ "coord": x["coord"], "type": x["type"], "time": x["time"].isoformat(), "dist": x["distance"] } for x in out]
+
+def get_collisions(lat, lng):
+    client = get_mongo_client()
+    out = client.homie.collisions.aggregate([{ "$geoNear": { "near": [lng, lat], "distanceField": "distance", "maxDistance": 3959*10, "spherical": True } }])
+    client.close()
+    return [{ "coord": x["coord"], "year": x["year"], "month": x["month"], "dist": x["distance"] } for x in out]
 
 def haversine(lon1, lat1, lon2, lat2):
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
@@ -142,4 +158,8 @@ if __name__ == "__main__":
     d = get_nearby(loc["lat"], loc["lng"])
     print(json.dumps(d, indent=4, sort_keys=True))
     d = get_zillow_data(laddr, lzip, advanced=True)
+    print(json.dumps(d, indent=4, sort_keys=True))
+    d = get_crimes(loc["lat"], loc["lng"])
+    print(json.dumps(d, indent=4, sort_keys=True))
+    d = get_collisions(loc["lat"], loc["lng"])
     print(json.dumps(d, indent=4, sort_keys=True))
