@@ -14,7 +14,7 @@ def xml_to_dict(xml):
             out[x.tag] = x.text
     return out
 
-def get_zillow_data(address, citystatezip):
+def get_zillow_data(address, citystatezip, advanced=False):
     r = requests.post("https://www.zillow.com/webservice/GetDeepSearchResults.htm", data = {
         "zws-id": ZWSID,
         "address": address,
@@ -28,8 +28,21 @@ def get_zillow_data(address, citystatezip):
             return None
         raise Exception("zillow api error: {} {}".format(msg_code, msg.find("text").text))
     resp = root.find("response").find("results").find("result")
-    return xml_to_dict(resp)
+    out = xml_to_dict(resp)
+    if advanced:
+        r = requests.post("https://www.zillow.com/webservice/GetUpdatedPropertyDetails.htm", data = {
+            "zws-id": ZWSID,
+            "zpid": int(out["zpid"])
+        })
+        root = ET.fromstring(r.text)
+        msg_code = int(root.find("message").find("code").text)
+        if msg_code == 0:
+            out["advanced"] = xml_to_dict(root.find("response"))
+        else:
+            out["advanced"] = None
+            out["advanced_error"] = msg_code
+    return out
 
 if __name__ == "__main__":
-    d = get_zillow_data("4224 N Fairhill St", "Philadelphia, PA 19140")
+    d = get_zillow_data("4224 N Fairhill St", "Philadelphia, PA 19140", advanced=True)
     print(json.dumps(d, indent=4, sort_keys=True))
