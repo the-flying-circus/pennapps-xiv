@@ -14,20 +14,15 @@
 {% block content %}
     {{ super() }}
     <iframe class="map col s12 m12 l8 offset-l2" src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ place_id }}&key={{ mapkey }}" allowfullscreen></iframe>
-    <div class="card white">
+    <div class="card white overview">
         <div class="card-content">
             <span class="card-title">Overview</span>
-            <p>
-                <strong>
-                {{ overview.address.street }}<br>
-                    {{ overview.address.city }}, {{ overview.address.state }} {{ overview.address.zipcode }}
-                </strong>
-            </p>
             <ul>
-                <li>{{ overview.bedrooms }} beds - {{ overview.bathrooms }} baths - {{ overview.sqft }} ft<sup>2</sup></li>
-                <li>Zestimate&reg;: {{ overview.zestimate|format_money }}</li>
-                <li>Built: {{ overview.built }}</li>
-                <li>Last Sold: {{ overview.lastSold }}</li>
+                <li><strong>{{ overview.address.street }}<br>{{ overview.address.city }}, {{ overview.address.state }} {{ overview.address.zipcode }}</strong></li>
+                <li><strong>{{ overview.bedrooms }} beds - {{ overview.bathrooms }} baths - {{ overview.sqft }} ft<sup>2</sup></strong></li>
+                <li><strong>Zestimate&reg;:</strong> {{ overview.zestimate|format_money }}</li>
+                <li><strong>Built:</strong> {{ overview.built }}</li>
+                <li><strong>Last Sold:</strong> {{ overview.lastSold }}</li>
                 <li><a href="{{ overview.zillow }}" target="_blank">More details on Zillow</a></li>
             </ul>
         </div>
