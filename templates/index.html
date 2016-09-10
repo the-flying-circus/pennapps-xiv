@@ -13,7 +13,7 @@
         <div id="welcome-div">
             <h1 id="welcome-text" class="center-align">Welcome, Homie.</h1>
             <div class="row">
-                <form action="info" onsubmit="start_preloader()">
+                <form id="search-form" action="info" method="GET">
                     <div class="input-field col s12 m10 offset-m1 l8 offset-l2">
                         <i class="material-icons prefix">search</i>
                         <input name="query" id="search" type="text" class="validate" required>
@@ -22,18 +22,18 @@
                 </form>
             </div>
             <div class="center-align">
-		<div class="preloader-wrapper big">
-		    <div class="spinner-layer spinner-blue-only">
-			<div class="circle-clipper left">
-			    <div class="circle"></div>
-			</div><div class="gap-patch">
-			    <div class="circle"></div>
-			</div><div class="circle-clipper right">
-			    <div class="circle"></div>
-			</div>
-		    </div>
-		</div>
-	    </div>
+        <div class="preloader-wrapper big">
+            <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div><div class="gap-patch">
+                <div class="circle"></div>
+            </div><div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+            </div>
+        </div>
+        </div>
         </div>
     </div>
 {% endblock %}
