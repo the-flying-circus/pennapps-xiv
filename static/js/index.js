@@ -14,7 +14,10 @@ $(document).ready(function() {
     });
 });
 
+var preloader_started = false;
 function start_preloader() {
+    if (preloader_started) return;
+    preloader_started = true;
     $("#welcome-div .input-field").velocity({width: 0, opacity: 0.1}, {duration: 300, complete: function() {
         $(".preloader-wrapper").addClass("active");
     }});
@@ -56,6 +59,10 @@ if (!Array.prototype.includes) {
 function submitAddress() {
     var place = autocomplete.getPlace();
     if (place.types.includes("geocode") || place.types.includes("address") || place.types.includes("street_address")) {
+        start_preloader();
         window.location = "/info?place_id=" + encodeURIComponent(place.place_id) + "&query=" + encodeURIComponent($search.val());
+    }
+    else {
+        console.log("invalid place: " + place.types);
     }
 }
