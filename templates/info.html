@@ -135,6 +135,42 @@
     </div>
     <div class="card white">
         <div class="card-content">
+            <span class="card-title">Family Entertainment</span>
+            {% if parks|length > 0 %}
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Distance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in entertainment|crop_list %}
+                    <tr>
+                        {% if item.type == "amusement_park" %}
+                        <td><i class="tiny material-icons">insert_emoticon</i>&ensp;Amusement Park</td>
+                        {% elif item.type == "exhibit" %}
+                        <td><i class="tiny material-icons">account_balance</i>&ensp;Exhibit</td>
+                        {% elif item.type == "movie_theater" %}
+                        <td><i class="tiny material-icons">theaters</i>&ensp;Movie Theater</td>
+                        {% else %}
+                        <td>{{ item.type|title }}</td>
+                        {% endif %}
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.dist|round(1) }} mi</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>There is no family entertainment in this area.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card white">
+        <div class="card-content">
             <span class="card-title">Public Transportation</span>
             {% if transportation|length > 0 %}
             <table class="responsive-table">
