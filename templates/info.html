@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/css/info.css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/scrollReveal.js/3.3.1/scrollreveal.min.js"></script>
     <script type="text/javascript" src="/js/jquery.timeago.js"></script>
+    <script type="text/javascript" src="/js/chart.js"></script>
     <script type="text/javascript" src="/js/info.js"></script>
 {% endblock %}
 
@@ -49,7 +50,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for school in schools %}
+                {% for school in schools.schools %}
                 <tr>
                     <td>{{ school.grade }}</td><td>{{ school.name }}</td>
                 </tr>
@@ -61,6 +62,28 @@
             {% endif %}
         </div>
     </div>
+    {% if schools and schools.testing.math %}
+    <div class="card white overview">
+        <div class="card-content">
+            <span class="card-title">Standardized Test Scores (High School)</span>
+            <div id="row-charts" class="row">
+                <div class="col s8 offset-s2 m4 l4">
+                    <h5>Mathematics</h5>
+                    <canvas width="200" height="200" id="chart-math"></canvas>
+                </div>
+                <div class="col s8 offset-s2 m4 l4">
+                    <h5>Science</h5>
+                    <canvas width="200" height="200" id="chart-science"></canvas>
+                </div>
+                <div class="col s8 offset-s2 m4 l4">
+                    <h5>English</h5>
+                    <canvas width="200" height="200" id="chart-english"></canvas>
+                </div>
+            </div>
+            <p id="school-data" style="display:none">{{ schools.testing|tojson }}</p>
+        </div>
+    </div>
+    {% endif %}
     <div class="card white">
         <div class="card-content">
             <span class="card-title">Services</span>
@@ -219,9 +242,13 @@
                     {% for item in transportation|crop_list %}
                     <tr>
                         {% if item.type == "bus_station" %}
-                        <td><i class="tiny material-icons">directions_bus</i>&ensp;Bus Stop</td>
+                        <td><i class="tiny material-icons">directions_bus</i>&ensp;Bus Station</td>
                         {% elif item.type == "subway_station" %}
-                        <td><i class="tiny material-icons">train</i>&ensp;Subway Station</td>
+                        <td><i class="tiny material-icons">subway</i>&ensp;Subway Station</td>
+                        {% elif item.type == "train_station" %}
+                        <td><i class="tiny material-icons">train</i>&ensp;Train Station</td>
+                        {% elif item.type == "transit_station" %}
+                        <td><i class="tiny material-icons">subway</i>&ensp;Transit Station</td>
                         {% else %}
                         <td>{{ item.type|title }}</td>
                         {% endif %}
@@ -251,7 +278,7 @@
                 <tbody>
                     {% for item in crimes|crop_list %}
                     <tr>
-                        <td>{% if item.car %}<i class="tiny material-icons">directions_car</i> {% endif %}{{ item.type }}</td>
+                        <td>{% if item.car %}<i class="tiny material-icons">directions_car</i>{% else %}<i class="tiny material-icons">gavel</i>{% endif %} {{ item.type }}</td>
                         <td class="timeago" title="{{ item.time }}">{{ item.time|format_date }}</td>
                         <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
@@ -263,4 +290,9 @@
             {% endif %}
         </div>
     </div>
+{% endblock %}
+{% block footer %}
+    <footer class="footer-copyright blue white-text center-align">
+    	Made with&ensp;<i class="material-icons red-text text-lighten-2 tooltipped animated infinite pulse" data-position="top" data-delay="0" data-tooltip="Thanks for visiting!">favorite</i>&ensp;by The Flying Circus
+    </footer>
 {% endblock %}
