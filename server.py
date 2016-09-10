@@ -44,14 +44,14 @@ def info():
                            "neighborhood": data.get_neighborhood_data(),
                            "services": data.get_public_services(geoinfo),
                            "transportation": data.get_transportation(geoinfo),
-                           "crimes": data.get_crimes(lat, lng)
+                           "crimes": data.get_crimes_and_collisions(lat, lng)
                 }
-            except:
-                flash("Invalid address!")
+            except Exception as e:
+                flash("Error processing request: {}".format(e))
                 return redirect("/")
             return render_template("info.html", **context)
         else:
-            flash("Invalid address!")
+            flash("Invalid address! We could not geocode the address you provided.")
             return redirect("/")
     else:
         flash("Invalid address!")
