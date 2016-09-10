@@ -6,6 +6,7 @@ body {
 
 #content {
     margin-top: 30px;
+    margin-bottom: 40px;
 }
 
 .input-field input[type=text]:focus {
