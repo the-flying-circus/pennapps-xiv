@@ -20,9 +20,11 @@
 
     <body>
         <nav class="blue">
+            {% block nav %}
             <div class="navbar-wrapper">
                 <a class="brand-logo center" href="/"><i class="material-icons">home</i>Homie</a>
             </div>
+            {% endblock %}
         </nav>
         <div id="content" class="container">
             {% with messages = get_flashed_messages() %}

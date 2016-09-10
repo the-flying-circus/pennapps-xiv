@@ -1,8 +1,20 @@
 $(document).ready(function() {
+    $window = $(window);
+    $btn_collapse = $(".button-collapse");
     $(".timeago").timeago();
 
     var sr = ScrollReveal();
     sr.reveal(".property-img, .map, .card");
+    $btn_collapse.sideNav({
+        menuWidth: 200
+    });
+    $("#slide-out").click(function() {
+        if ($window.width() <= 992)
+            $btn_collapse.sideNav("hide");
+    });
+    $(".scrollspy").scrollSpy({
+        scrollOffset: 20
+    });
     var chart_data = JSON.parse($("#school-data").text());
     $.each(["math", "science", "english"], function(k, v) {
         new Chart($("#chart-" + v)[0].getContext("2d"), {
