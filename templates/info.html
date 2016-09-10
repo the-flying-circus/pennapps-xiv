@@ -3,12 +3,9 @@
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" href="/css/info.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/scrollReveal.js/3.3.1/scrollreveal.min.js"></script>
     <script type="text/javascript" src="/js/jquery.timeago.js"></script>
-    <script type="text/javascript">
-    $(document).ready(function() {
-        $(".timeago").timeago();
-    });
-    </script>
+    <script type="text/javascript" src="/js/info.js"></script>
 {% endblock %}
 
 {% block content %}
