@@ -29,4 +29,5 @@
     width: 20%;
     min-width: 100px;
     z-index: 1;
+    pointer-events: none;
 }

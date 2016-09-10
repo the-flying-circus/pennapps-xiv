@@ -41,6 +41,7 @@ def info():
             lng = loc["lng"]
             try:
                 context = {"mapkey": secret.GMAPS_FRONT_KEY,
+                           "current_year": datetime.datetime.now().year,
                            "place_id": place_id,
                            "lat": lat,
                            "lng": lng,
