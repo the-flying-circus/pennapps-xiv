@@ -278,7 +278,7 @@
                 <tbody>
                     {% for item in crimes|crop_list %}
                     <tr>
-                        <td>{% if item.car %}<i class="tiny material-icons">directions_car</i> {% endif %}{{ item.type }}</td>
+                        <td>{% if item.car %}<i class="tiny material-icons">directions_car</i>{% else %}<i class="tiny material-icons">gavel</i>{% endif %} {{ item.type }}</td>
                         <td class="timeago" title="{{ item.time }}">{{ item.time|format_date }}</td>
                         <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
