@@ -32,7 +32,7 @@ def info():
     address = request.args.get("query")
     import data, secret
     geoinfo = data.geocode(address)
-    if geoinfo:
+    if geoinfo and len(geoinfo["results"]) > 0:
         laddr, lzip = data.split_from_geocode(geoinfo)
         if laddr and lzip:
             place_id = request.args.get("place_id", geoinfo["results"][0]["place_id"])

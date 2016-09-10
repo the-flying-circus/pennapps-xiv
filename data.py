@@ -65,7 +65,10 @@ def get_nearby(lat, lng, building="bus_station"):
     })
     out = r.json()
     if out["status"] != "OK":
-        raise Exception(out["status"])
+        if "ZERO_RESULTS" in out["status"]:
+            return { "results": [], "status": "OK" }
+        else:
+            raise Exception(out["status"])
     return out
 
 def geocode(address):
@@ -75,6 +78,10 @@ def geocode(address):
     })
     out = r.json()
     if out["status"] != "OK":
+        if "ZERO_RESULTS" in out["status"]:
+            return { "results": [], "status": "OK" }
+        else:
+            raise Exception(out["status"])
         raise Exception(out["status"])
     return out
 
