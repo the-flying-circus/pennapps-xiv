@@ -25,7 +25,7 @@ def info():
     if geoinfo:
         laddr, lzip = data.split_from_geocode(geoinfo)
         if laddr and lzip:
-            place_id = request.args.get("place_id")
+            place_id = request.args.get("place_id", geoinfo["results"][0]["place_id"])
             loc = geoinfo["results"][0]["geometry"]["location"]
             lat = loc["lat"]
             lng = loc["lng"]
