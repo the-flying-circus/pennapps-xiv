@@ -21,11 +21,11 @@
         <div class="card-content" style="position: relative">
             <span class="card-title">Overview</span>
             <div class="row">
-                <ul class="col s6">
+                <ul class="col s12 m12 l6">
                     <li><strong>{{ overview.address.street }}<br>{{ overview.address.city }}, {{ overview.address.state }} {{ overview.address.zipcode }}</strong></li>
                     <li><strong>{{ overview.bedrooms }} beds&ensp;-&ensp;{{ overview.bathrooms }} baths&ensp;-&ensp;{{ overview.sqft }} ft<sup>2</sup></strong></li>
                 </ul>
-                <ul class="col s6">
+                <ul class="col s12 m12 l6">
                     <li><strong>Zestimate<sup>&reg;</sup>:</strong>&ensp;{{ overview.zestimate|format_money }}</li>
                     <li><strong>Built:</strong>&ensp;{{ overview.built }}</li>
                     <li><strong>Last Sold:</strong>&ensp;{{ overview.lastSold }}</li>
