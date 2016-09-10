@@ -19,7 +19,10 @@ crime.create_index([("coord", pymongo.GEO2D)])
 with open(crime_file) as f:
     reader = csv.reader(f)
     print(next(reader, None))
+    count = 0
     for row in reader:
+        if count > 1000000:
+            break
         loc = row[-2]
         if not loc.startswith("POINT"):
             continue
@@ -29,9 +32,11 @@ with open(crime_file) as f:
             "type": row[-3],
             "time": datetime.strptime(row[2], "%m/%d/%Y %I:%M:%S %p")
         })
+        count += 1
 
 collisions = db["collisions"]
 collisions.drop()
+collisions.create_index([("coord", pymongo.GEO2D)])
 
 with open(collisions_file) as f:
     reader = csv.reader(f)
