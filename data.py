@@ -106,7 +106,7 @@ def get_zillow_data(address, citystatezip, advanced=False):
     msg = root.find("message")
     msg_code = int(msg.find("code").text)
     if msg_code != 0:
-        if msg_code == 502 or msg_code == 504 or msg_code == 506 or msg_code == 507:
+        if msg_code == 502 or msg_code == 504 or msg_code == 506 or msg_code == 507 or msg_code == 508:
             return None
         raise Exception("zillow api error: {} {}".format(msg_code, msg.find("text").text))
     resp = root.find("response").find("results").find("result")
@@ -127,6 +127,8 @@ def get_zillow_data(address, citystatezip, advanced=False):
 
 def get_overview_data(laddr, lzip):
     data = get_zillow_data(laddr, lzip)
+    if not data:
+        return None
     return {
         "sqft": float(data["finishedSqFt"]),
         "built": int(data["yearBuilt"]),
