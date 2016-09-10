@@ -132,10 +132,17 @@ def get_public_services(geoinfo):
         loc2 = x["geometry"]["location"]
         out.append({
             "name": x["name"],
-            "type": ", ".join(x["types"]),
+            "type": type_lookup(x["types"]),
             "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
         })
     return out
+
+def type_lookup(t):
+    if "hospital" in t:
+        return "hospital"
+    if "bus_station" in t:
+        return "bus_station"
+    return ", ".join(t)
 
 def get_transportation(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
@@ -145,7 +152,7 @@ def get_transportation(geoinfo):
         loc2 = x["geometry"]["location"]
         out.append({
             "name": x["name"],
-            "type": ", ".join(x["types"]),
+            "type": type_lookup(x["types"]),
             "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
         })
     return out
