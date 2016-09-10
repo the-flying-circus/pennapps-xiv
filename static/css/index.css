@@ -15,14 +15,6 @@
     margin-top: 3rem;
 }
 
-.input-field input, .input-field label {
+.input-field input {
     font-size: 1.5rem;
-}
-
-.input-field label {
-    top: .4rem;
-}
-
-.input-field input:focus + label {
-    font-size: 1.2rem;
 }
