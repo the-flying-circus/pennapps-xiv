@@ -117,7 +117,7 @@
                 <tbody>
                     {% for item in crimes %}
                     <tr>
-                        <td>{{ item.type }}</td>
+                        <td>{% if item.car %}<i class="tiny material-icons">directions_car</i> {% endif %}{{ item.type }}</td>
                         <td class="timeago" title="{{ item.time }}">{{ item.time|format_date }}</td>
                         <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
