@@ -100,6 +100,41 @@
     </div>
     <div class="card white">
         <div class="card-content">
+            <span class="card-title">Parks and Recreation</span>
+            {% if parks|length > 0 %}
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Distance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in parks|crop_list %}
+                    <tr>
+                        {% if item.type == "park" %}
+                        <td><i class="tiny material-icons">nature_people</i>&ensp;Park</td>
+                        {% elif item.type == "zoo" %}
+                        <td><i class="tiny material-icons">pets</i>&ensp;Zoo</td>
+                        {% elif item.type == "campground" %}
+                        <td><i class="tiny material-icons">flag</i>&ensp;Campground</td>
+                        {% else %}
+                        <td>{{ item.type|title }}</td>
+                        {% endif %}
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.dist|round(1) }} mi</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>There are no parks in this area.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card white">
+        <div class="card-content">
             <span class="card-title">Public Transportation</span>
             {% if transportation|length > 0 %}
             <table class="responsive-table">

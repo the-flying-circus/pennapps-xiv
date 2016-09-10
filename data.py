@@ -144,7 +144,7 @@ def get_public_services(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
     data = get_nearby(loc["lat"], loc["lng"], building="hospital|library|book_store|post_office")
     out = []
-    for x in data["results"][:15]:
+    for x in data["results"][:10]:
         loc2 = x["geometry"]["location"]
         out.append({
             "name": x["name"],
@@ -153,6 +153,19 @@ def get_public_services(geoinfo):
         })
     return out
 
+def get_parks(geoinfo):
+    loc = geoinfo["results"][0]["geometry"]["location"]
+    data = get_nearby(loc["lat"], loc["lng"], building="park|zoo|campground")
+    out = []
+    for x in data["results"][:10]:
+        loc2 = x["geometry"]["location"]
+        out.append({
+            "name": x["name"],
+            "type": type_lookup(x["types"]),
+            "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
+        })
+    return out
+            
 def type_lookup(t):
     if "hospital" in t:
         return "hospital"
@@ -166,6 +179,12 @@ def type_lookup(t):
         return "book_store"
     if "post_office" in t:
         return "post_office"
+    if "park" in t:
+        return "park"
+    if "zoo" in t:
+        return "zoo"
+    if "campground" in t:
+        return "campground"
     return ", ".join(t)
 
 def get_transportation(geoinfo):
