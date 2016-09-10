@@ -166,7 +166,12 @@ def get_transportation(geoinfo):
     data = get_nearby(loc["lat"], loc["lng"], building="bus_station|subway_station|train_station|transit_station")
     out = []
     types = {}
+    already_exists = set()
     for x in data["results"][:20]:
+        if x["name"] in already_exists:
+            continue
+        else:
+            already_exists.add(x["name"])
         loc2 = x["geometry"]["location"]
         t = type_lookup(x["types"])
         if t in types:
