@@ -110,3 +110,15 @@ footer .material-icons {
         transform: scale3d(1, 1, 1);
     }
 }
+
+#row-charts p.green, #row-charts p.red {
+    margin-top: 10px;
+    padding: 5px;
+    text-align: center;
+    color: white;
+}
+
+#row-charts p.small {
+    text-align: center;
+    font-size: 0.65em;
+}
