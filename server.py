@@ -38,6 +38,7 @@ def info():
             try:
                 context = {"mapkey": secret.GMAPS_FRONT_KEY,
                            "place_id": place_id,
+                           "query": request.args.get("query"),
                            "overview": data.get_overview_data(laddr, lzip),
                            "taxes": data.get_tax_history(),
                            "neighborhood": data.get_neighborhood_data(),
