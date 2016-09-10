@@ -158,6 +158,11 @@ def get_census(address):
     })
     out = r.json()
     
+def get_schools(lat, lng):
+    r = requests.get("https://webapps.philasd.org/school_finder/ajax/pip/" + str(lat) + '/' + str(lng))
+    print(r.text)
+    #extract school info
+    
 
 if __name__ == "__main__":
     d = geocode("4224 N Fairhill St, Philadelphia, PA 19140")
@@ -174,3 +179,4 @@ if __name__ == "__main__":
     print(json.dumps(d, indent=4, sort_keys=True))
     d = get_census(laddr)
     print(json.dumps(d, indent=4, sort_keys=True))
+    get_schools(loc["lat"], loc["lng"])
