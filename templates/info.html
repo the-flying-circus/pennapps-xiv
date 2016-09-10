@@ -3,6 +3,12 @@
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" href="/css/info.css">
+    <script type="text/javascript" src="/js/jquery.timeago.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $(".timeago").timeago();
+    });
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -77,7 +83,7 @@
                     {% for item in crimes %}
                     <tr>
                         <td>{{ item.type }}</td>
-                        <td>{{ item.time }}</td>
+                        <td class="timeago" title="{{ item.time }}">{{ item.time|format_date }}</td>
                         <td>{{ item.dist }}</td>
                     </tr>
                     {% endfor %}

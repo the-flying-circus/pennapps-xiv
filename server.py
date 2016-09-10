@@ -4,9 +4,14 @@ from flask import *
 import requests
 import secret
 import data
+import datetime
 
 app = Flask(__name__, static_url_path="")
 app.secret_key = secret.SECRET_KEY
+
+@app.template_filter()
+def format_date(t):
+    return datetime.datetime.strptime(t, "%Y-%m-%dT%H:%M:%S").strftime("%r %D")
 
 @app.route("/")
 def index():
