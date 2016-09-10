@@ -285,7 +285,14 @@ def get_schools(lat, lng):
             science.append(curr["basic"])
             science.append(curr["below"])
             break
-    out = {'schools':schools, 'testing':{'english':english, 'math':math, 'science':science}}
+    out = {
+        "schools": schools,
+        "testing": {
+            "english": english,
+            "math": math,
+            "science":science
+        }
+    }
     return out
 
 if __name__ == "__main__":
