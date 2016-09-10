@@ -10,7 +10,16 @@ def index():
 
 @app.route("/info")
 def info():
-    return render_template("info.html")
+    address = request.args.get("query")
+    import data
+    laddr, lzip = data.split_from_geocode(data.geocode(address))
+    context = {"overview": data.get_overview_data(),
+               "taxes": data.get_tax_history(),
+               "neighborhood": data.get_neighborhood_data(),
+               "services": data.get_public_services(),
+               "transportation": data.get_transportation(),
+    }
+    return render_template("info.html", **context)
 
 if __name__ == "__main__":
     import sys
