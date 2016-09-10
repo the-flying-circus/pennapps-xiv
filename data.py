@@ -179,10 +179,26 @@ def get_entertainment(geoinfo):
         })
     return out
 
+def get_emergency(geoinfo):
+    loc = geoinfo["results"][0]["geometry"]["location"]
+    data = get_nearby(loc["lat"], loc["lng"], building="fire_station|hospital|police")
+    out = []
+    for x in data["results"][:10]:
+        loc2 = x["geometry"]["location"]
+        out.append({
+            "name": x["name"],
+            "type": type_lookup(x["types"]),
+            "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
+        })
+    return out
 
 def type_lookup(t):
     if "hospital" in t:
         return "hospital"
+    if "fire_station" in t:
+        return "fire_station"
+    if "police" in t:
+        return "police"
     if "bus_station" in t:
         return "bus_station"
     if "subway_station" in t:
