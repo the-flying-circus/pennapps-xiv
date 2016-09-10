@@ -22,10 +22,10 @@
             <span class="card-title">Overview</span>
             <ul>
                 <li><strong>{{ overview.address.street }}<br>{{ overview.address.city }}, {{ overview.address.state }} {{ overview.address.zipcode }}</strong></li>
-                <li><strong>{{ overview.bedrooms }} beds - {{ overview.bathrooms }} baths - {{ overview.sqft }} ft<sup>2</sup></strong></li>
-                <li><strong>Zestimate<sup>&reg;</sup>:</strong> {{ overview.zestimate|format_money }}</li>
-                <li><strong>Built:</strong> {{ overview.built }}</li>
-                <li><strong>Last Sold:</strong> {{ overview.lastSold }}</li>
+                <li><strong>{{ overview.bedrooms }} beds&ensp;-&ensp;{{ overview.bathrooms }} baths&ensp;-&ensp;{{ overview.sqft }} ft<sup>2</sup></strong></li>
+                <li><strong>Zestimate<sup>&reg;</sup>:</strong>&ensp;{{ overview.zestimate|format_money }}</li>
+                <li><strong>Built:</strong>&ensp;{{ overview.built }}</li>
+                <li><strong>Last Sold:</strong>&ensp;{{ overview.lastSold }}</li>
                 <li><a href="{{ overview.zillow }}" target="_blank">More details on Zillow</a></li>
             </ul>
             <img src="img/zillow.png" title="Provided by Zillow" class="zillow-img" />
@@ -46,13 +46,13 @@
                     {% for item in services|crop_list %}
                     <tr>
                         {% if item.type == "hospital" %}
-                        <td><i class="tiny material-icons">local_hospital</i>&nbsp;&nbsp;Hospital</td>
+                        <td><i class="tiny material-icons">local_hospital</i>&ensp;Hospital</td>
                         {% elif item.type == "library" %}
-                        <td><i class="tiny material-icons">book</i>&nbsp;&nbsp;Public Library</td>
+                        <td><i class="tiny material-icons">book</i>&ensp;Public Library</td>
                         {% elif item.type == "book_store" %}
-                        <td><i class="tiny material-icons">book</i>&nbsp;&nbsp;Book Store</td>
+                        <td><i class="tiny material-icons">book</i>&ensp;Book Store</td>
                         {% elif item.type == "post_office" %}
-                        <td><i class="tiny material-icons">email</i>&nbsp;&nbsp;Post Office</td>
+                        <td><i class="tiny material-icons">email</i>&ensp;Post Office</td>
                         {% else %}
                         <td>{{ item.type|title }}</td>
                         {% endif %}
@@ -84,9 +84,9 @@
                     {% for item in transportation|crop_list %}
                     <tr>
                         {% if item.type == "bus_station" %}
-                        <td><i class="tiny material-icons">directions_bus</i> Bus Stop</td>
+                        <td><i class="tiny material-icons">directions_bus</i>&ensp;Bus Stop</td>
                         {% elif item.type == "subway_station" %}
-                        <td><i class="tiny material-icons">train</i> Subway Station</td>
+                        <td><i class="tiny material-icons">train</i>&ensp;Subway Station</td>
                         {% else %}
                         <td>{{ item.type|title }}</td>
                         {% endif %}
