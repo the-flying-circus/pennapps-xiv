@@ -20,14 +20,19 @@
     <div class="card white overview">
         <div class="card-content" style="position: relative">
             <span class="card-title">Overview</span>
-            <ul>
-                <li><strong>{{ overview.address.street }}<br>{{ overview.address.city }}, {{ overview.address.state }} {{ overview.address.zipcode }}</strong></li>
-                <li><strong>{{ overview.bedrooms }} beds&ensp;-&ensp;{{ overview.bathrooms }} baths&ensp;-&ensp;{{ overview.sqft }} ft<sup>2</sup></strong></li>
-                <li><strong>Zestimate<sup>&reg;</sup>:</strong>&ensp;{{ overview.zestimate|format_money }}</li>
-                <li><strong>Built:</strong>&ensp;{{ overview.built }}</li>
-                <li><strong>Last Sold:</strong>&ensp;{{ overview.lastSold }}</li>
-                <li><a href="{{ overview.zillow }}" target="_blank">More details on Zillow</a></li>
-            </ul>
+            <div class="row">
+                <ul class="col s6">
+                    <li><strong>{{ overview.address.street }}<br>{{ overview.address.city }}, {{ overview.address.state }} {{ overview.address.zipcode }}</strong></li>
+                    <li><strong>{{ overview.bedrooms }} beds&ensp;-&ensp;{{ overview.bathrooms }} baths&ensp;-&ensp;{{ overview.sqft }} ft<sup>2</sup></strong></li>
+                </ul>
+                <ul class="col s6">
+                    <li><strong>Zestimate<sup>&reg;</sup>:</strong>&ensp;{{ overview.zestimate|format_money }}</li>
+                    <li><strong>Built:</strong>&ensp;{{ overview.built }}</li>
+                    <li><strong>Last Sold:</strong>&ensp;{{ overview.lastSold }}</li>
+                    <li></li>
+                </ul>
+            </div>
+            <a href="{{ overview.zillow }}" target="_blank">More details on Zillow</a>
             <img src="img/zillow.png" title="Provided by Zillow" class="zillow-img" />
         </div>
     </div>

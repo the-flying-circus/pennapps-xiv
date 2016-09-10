@@ -24,4 +24,5 @@
     right: 0;
     width: 20%;
     min-width: 100px;
+    z-index: 1;
 }
