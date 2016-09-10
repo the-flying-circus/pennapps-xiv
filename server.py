@@ -49,7 +49,8 @@ def info():
                            "services": data.get_public_services(geoinfo),
                            "transportation": data.get_transportation(geoinfo),
                            "crimes": data.get_crimes_and_collisions(lat, lng),
-                           "schools": data.get_schools(lat, lng)
+                           "schools": data.get_schools(lat, lng),
+                           "parks": data.get_parks(geoinfo)
                 }
             except Exception as e:
                 flash("Error processing request: {}".format(e))
