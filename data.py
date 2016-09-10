@@ -134,19 +134,11 @@ def get_overview_data(laddr, lzip):
         "built": int(data["yearBuilt"]),
         "zillow": data["links"]["homedetails"],
         "address": data["address"],
-        "bedrooms": data["bedrooms"],
-        "bathrooms": data["bathrooms"],
+        "bedrooms": data.get("bedrooms", None),
+        "bathrooms": data.get("bathrooms", None),
         "lastSold": data.get("lastSoldDate", None),
         "zestimate": float(data["zestimate"]["amount"])
     }
-
-def get_tax_history():
-    out = [{"year": "2016", "taxes": "100", "assessment": "101"}]
-    return out
-
-def get_neighborhood_data():
-    out = {"median": "100000", "walkscore": "5"}
-    return out
 
 def get_public_services(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]

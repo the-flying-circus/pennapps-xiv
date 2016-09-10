@@ -46,8 +46,6 @@ def info():
                            "lat": lat,
                            "lng": lng,
                            "overview": data.get_overview_data(laddr, lzip),
-                           "taxes": data.get_tax_history(),
-                           "neighborhood": data.get_neighborhood_data(),
                            "services": data.get_public_services(geoinfo),
                            "transportation": data.get_transportation(geoinfo),
                            "crimes": data.get_crimes_and_collisions(lat, lng),
