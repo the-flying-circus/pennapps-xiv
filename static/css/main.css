@@ -1,0 +1,19 @@
+#welcome-text {
+    margin-top: 20vh;
+}
+
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #2196f3;
+} 
+
+.input-field input[type=text]:focus + label {
+    color: #2196f3;
+}
+
+.input-field .prefix.active {
+    color: #2196f3;
+}
+
+.material-icons {
+    line-height: inherit !important;
+}
