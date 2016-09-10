@@ -6,6 +6,7 @@ import secret
 import data
 import datetime
 import locale
+import traceback
 
 app = Flask(__name__, static_url_path="")
 app.secret_key = secret.SECRET_KEY
@@ -59,6 +60,7 @@ def info():
                            "emergency": data.get_emergency(geoinfo)
                 }
             except Exception as e:
+                traceback.print_exc()
                 flash("Error processing request: {}".format(e))
                 return redirect("/")
             return render_template("info.html", **context)

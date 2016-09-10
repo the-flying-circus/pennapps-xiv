@@ -258,9 +258,10 @@ def get_schools(lat, lng):
     high = ''
     for i in range(0, len(items), 2):
         schools.append({ "grade": items[i].text, "name": items[i + 1].text })
-        if items[i].text[len(items[i].text - 2):len(items[i].text)] == '12':
-            highlist = items[i + 1].text.split(' ')
-            high = highlist[0] #check that this returns high school last name
+        if items[i]:
+            if int(items[i].text.strip()[-2:]) == 12:
+                highlist = items[i + 1].text.split(' ')
+                high = highlist[0] #check that this returns high school last name
     #high = 'edison'
     testing = json.load(open('jsondata/keystone.json'))
     english = list()
