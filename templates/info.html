@@ -2,6 +2,7 @@
 
 {% block content %}
     {{ super() }}
+    <iframe class="map" src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ place_id }}&key={{ mapkey }}" allowfullscreen></iframe>
     <div class="card white">
         <div class="card-content">
             <span class="card-title">Overview</span>
@@ -23,7 +24,7 @@
                     <tr>
                         <td>{{ item.type }}</td>
                         <td>{{ item.name }}</td>
-                        <td>{{ item.distance }}</td>
+                        <td>{{ item.dist }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
