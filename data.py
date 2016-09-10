@@ -149,6 +149,15 @@ def get_transportation(geoinfo):
             "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
         })
     return out
+    
+def get_census(address):
+    r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/onelineaddress", params = {
+        "address": address,
+        "benchmark": "Public_AR_Current",
+        "format": "json"
+    })
+    out = r.json()
+    
 
 if __name__ == "__main__":
     d = geocode("4224 N Fairhill St, Philadelphia, PA 19140")
@@ -162,4 +171,6 @@ if __name__ == "__main__":
     d = get_crimes(loc["lat"], loc["lng"])
     print(json.dumps(d, indent=4, sort_keys=True))
     d = get_collisions(loc["lat"], loc["lng"])
+    print(json.dumps(d, indent=4, sort_keys=True))
+    d = get_census(laddr)
     print(json.dumps(d, indent=4, sort_keys=True))
