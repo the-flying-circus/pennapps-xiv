@@ -38,6 +38,12 @@
                     <tr>
                         {% if item.type == "hospital" %}
                         <td><i class="tiny material-icons">local_hospital</i> Hospital</td>
+                        {% elif item.type == "library" %}
+                        <td><i class="tiny material-icons">book</i> Public Library</td>
+                        {% elif item.type == "book_store" %}
+                        <td><i class="tiny material-icons">book</i> Book Store</td>
+                        {% elif item.type == "post_office" %}
+                        <td><i class="tiny material-icons">email</i> Post Office</td>
                         {% else %}
                         <td>{{ item.type|title }}</td>
                         {% endif %}
@@ -65,6 +71,8 @@
                     <tr>
                         {% if item.type == "bus_station" %}
                         <td><i class="tiny material-icons">directions_bus</i> Bus Stop</td>
+                        {% elif item.type == "subway_station" %}
+                        <td><i class="tiny material-icons">train</i> Subway Station</td>
                         {% else %}
                         <td>{{ item.type|title }}</td>
                         {% endif %}
