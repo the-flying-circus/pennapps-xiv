@@ -15,9 +15,13 @@ def format_date(t):
     return datetime.datetime.strptime(t, "%Y-%m-%dT%H:%M:%S").strftime("%r %D")
 
 @app.template_filter()
-def format_money(t):
+def format_money(m):
     locale.setlocale( locale.LC_ALL, '' )
-    return locale.currency(t, grouping=True)
+    return locale.currency(m, grouping=True)
+
+@app.template_filter()
+def crop_list(l):
+    return l[:min(10, len(l))]
 
 @app.route("/")
 def index():

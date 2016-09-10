@@ -43,7 +43,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in services %}
+                    {% for item in services|crop_list %}
                     <tr>
                         {% if item.type == "hospital" %}
                         <td><i class="tiny material-icons">local_hospital</i>&nbsp;&nbsp;Hospital</td>
@@ -81,7 +81,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in transportation %}
+                    {% for item in transportation|crop_list %}
                     <tr>
                         {% if item.type == "bus_station" %}
                         <td><i class="tiny material-icons">directions_bus</i> Bus Stop</td>
@@ -115,7 +115,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in crimes %}
+                    {% for item in crimes|crop_list %}
                     <tr>
                         <td>{% if item.car %}<i class="tiny material-icons">directions_car</i> {% endif %}{{ item.type }}</td>
                         <td class="timeago" title="{{ item.time }}">{{ item.time|format_date }}</td>
