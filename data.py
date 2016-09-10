@@ -161,6 +161,26 @@ def get_public_services(geoinfo):
         })
     return out
 
+def get_transportation(geoinfo):
+    loc = geoinfo["results"][0]["geometry"]["location"]
+    data = get_nearby(loc["lat"], loc["lng"], building="bus_station|subway_station|train_station|transit_station")
+    out = []
+    types = {}
+    for x in data["results"][:20]:
+        loc2 = x["geometry"]["location"]
+        t = type_lookup(x["types"])
+        if t in types:
+            if types[t] == 4: continue
+            types[t] += 1
+        else:
+            types[t] = 1
+        out.append({
+            "name": x["name"],
+            "type": type_lookup(x["types"]),
+            "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
+        })
+    return out
+
 def get_parks(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
     data = get_nearby(loc["lat"], loc["lng"], building="park|zoo|campground")
@@ -232,6 +252,10 @@ def type_lookup(t):
         return "bus_station"
     if "subway_station" in t:
         return "subway_station"
+    if "transit_station" in t:
+        return "transit_station"
+    if "train_station" in t:
+        return "train_station"
     if "library" in t:
         return "library"
     if "post_office" in t:
@@ -251,19 +275,6 @@ def type_lookup(t):
     if "movie_theater" in t:
         return "movie_theater"
     return ", ".join(t)
-
-def get_transportation(geoinfo):
-    loc = geoinfo["results"][0]["geometry"]["location"]
-    data = get_nearby(loc["lat"], loc["lng"], building="bus_station|subway_station")
-    out = []
-    for x in data["results"][:10]:
-        loc2 = x["geometry"]["location"]
-        out.append({
-            "name": x["name"],
-            "type": type_lookup(x["types"]),
-            "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
-        })
-    return out
     
 def get_census(address):
     r = requests.get("https://geocoding.geo.census.gov/geocoder/locations/onelineaddress/", params = {
