@@ -15,7 +15,7 @@ def format_date(t):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", mapskey=secret.GMAPS_FRONT_KEY)
 
 @app.route("/info")
 def info():
@@ -25,11 +25,11 @@ def info():
     if geoinfo:
         laddr, lzip = data.split_from_geocode(geoinfo)
         if laddr and lzip:
+            place_id = request.args.get("place_id")
             loc = geoinfo["results"][0]["geometry"]["location"]
             lat = loc["lat"]
             lng = loc["lng"]
-            place_id = geoinfo["results"][0]["place_id"]
-            context = {"mapkey": secret.GMAPS_EMBED_KEY,
+            context = {"mapkey": secret.GMAPS_FRONT_KEY,
                        "place_id": place_id,
                        "overview": data.get_overview_data(laddr, lzip),
                        "taxes": data.get_tax_history(),

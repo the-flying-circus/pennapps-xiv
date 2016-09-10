@@ -36,9 +36,19 @@
                 <tbody>
                     {% for item in services %}
                     <tr>
-                        <td>{{ item.type }}</td>
+                        {% if item.type == "hospital" %}
+                        <td><i class="tiny material-icons">local_hospital</i> Hospital</td>
+                        {% elif item.type == "library" %}
+                        <td><i class="tiny material-icons">book</i> Public Library</td>
+                        {% elif item.type == "book_store" %}
+                        <td><i class="tiny material-icons">book</i> Book Store</td>
+                        {% elif item.type == "post_office" %}
+                        <td><i class="tiny material-icons">email</i> Post Office</td>
+                        {% else %}
+                        <td>{{ item.type|title }}</td>
+                        {% endif %}
                         <td>{{ item.name }}</td>
-                        <td>{{ item.dist }}</td>
+                        <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -59,9 +69,15 @@
                 <tbody>
                     {% for item in transportation %}
                     <tr>
-                        <td>{{ item.type }}</td>
+                        {% if item.type == "bus_station" %}
+                        <td><i class="tiny material-icons">directions_bus</i> Bus Stop</td>
+                        {% elif item.type == "subway_station" %}
+                        <td><i class="tiny material-icons">train</i> Subway Station</td>
+                        {% else %}
+                        <td>{{ item.type|title }}</td>
+                        {% endif %}
                         <td>{{ item.name }}</td>
-                        <td>{{ item.dist }}</td>
+                        <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -84,7 +100,7 @@
                     <tr>
                         <td>{{ item.type }}</td>
                         <td class="timeago" title="{{ item.time }}">{{ item.time|format_date }}</td>
-                        <td>{{ item.dist }}</td>
+                        <td>{{ item.dist|round(1) }} mi</td>
                     </tr>
                     {% endfor %}
                 </tbody>
