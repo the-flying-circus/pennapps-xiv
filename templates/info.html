@@ -37,13 +37,13 @@
                     {% for item in services %}
                     <tr>
                         {% if item.type == "hospital" %}
-                        <td><i class="tiny material-icons">local_hospital</i> Hospital</td>
+                        <td><i class="tiny material-icons">local_hospital</i>&nbsp;&nbsp;Hospital</td>
                         {% elif item.type == "library" %}
-                        <td><i class="tiny material-icons">book</i> Public Library</td>
+                        <td><i class="tiny material-icons">book</i>&nbsp;&nbsp;Public Library</td>
                         {% elif item.type == "book_store" %}
-                        <td><i class="tiny material-icons">book</i> Book Store</td>
+                        <td><i class="tiny material-icons">book</i>&nbsp;&nbsp;Book Store</td>
                         {% elif item.type == "post_office" %}
-                        <td><i class="tiny material-icons">email</i> Post Office</td>
+                        <td><i class="tiny material-icons">email</i>&nbsp;&nbsp;Post Office</td>
                         {% else %}
                         <td>{{ item.type|title }}</td>
                         {% endif %}
