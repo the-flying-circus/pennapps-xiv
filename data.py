@@ -87,9 +87,18 @@ def get_zillow_data(address, citystatezip, advanced=False):
             out["advanced_error"] = msg_code
     return out
 
-def get_overview_data():
-    out = {"address": "123 street", "beds": "2", "baths": "4", "area": "1000", "onsale": True, "zestimate": "100000", "refi": "4000"}
-    return out
+def get_overview_data(laddr, lzip):
+    data = get_zillow_data(laddr, lzip)
+    return {
+        "sqft": float(data["finishedSqFt"]),
+        "built": int(data["yearBuilt"]),
+        "zillow": data["links"]["homedetails"],
+        "address": data["address"],
+        "bedrooms": data["bedrooms"],
+        "bathrooms": data["bathrooms"],
+        "lastSold": data["lastSoldDate"],
+        "zestimate": float(data["zestimate"]["amount"])
+    }
 
 def get_tax_history():
     out = [{"year": "2016", "taxes": "100", "assessment": "101"}]
@@ -99,12 +108,30 @@ def get_neighborhood_data():
     out = {"median": "100000", "walkscore": "5"}
     return out
 
-def get_public_services():
-    out = [{"type": "library", "name": "the library", "dist": "2"}]
+def get_public_services(geoinfo):
+    loc = geoinfo["results"][0]["geometry"]["location"]
+    data = get_nearby(loc["lat"], loc["lng"], building="hospital")
+    out = []
+    for x in data["results"]:
+        loc2 = x["geometry"]["location"]
+        out.append({
+            "name": x["name"],
+            "type": ", ".join(x["types"]),
+            "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
+        })
     return out
 
-def get_transportation():
-    out = [{"type": "train", "name": "the station", "dist": "3"}]
+def get_transportation(geoinfo):
+    loc = geoinfo["results"][0]["geometry"]["location"]
+    data = get_nearby(loc["lat"], loc["lng"])
+    out = []
+    for x in data["results"]:
+        loc2 = x["geometry"]["location"]
+        out.append({
+            "name": x["name"],
+            "type": ", ".join(x["types"]),
+            "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
+        })
     return out
 
 if __name__ == "__main__":

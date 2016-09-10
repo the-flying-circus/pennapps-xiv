@@ -18,11 +18,11 @@ def info():
     if geoinfo:
         laddr, lzip = data.split_from_geocode(geoinfo)
         if laddr and lzip:
-            context = {"overview": data.get_overview_data(),
+            context = {"overview": data.get_overview_data(laddr, lzip),
                        "taxes": data.get_tax_history(),
                        "neighborhood": data.get_neighborhood_data(),
-                       "services": data.get_public_services(),
-                       "transportation": data.get_transportation(),
+                       "services": data.get_public_services(geoinfo),
+                       "transportation": data.get_transportation(geoinfo),
             }
             return render_template("info.html", **context)
         else:

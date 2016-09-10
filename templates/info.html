@@ -5,6 +5,7 @@
     <div class="card white">
         <div class="card-content">
             <span class="card-title">Overview</span>
+            <pre>{{ overview }}</pre>
         </div>
     </div>
     <div class="card white">
@@ -23,7 +24,30 @@
                     <tr>
                         <td>{{ item.type }}</td>
                         <td>{{ item.name }}</td>
-                        <td>{{ item.distance }}</td>
+                        <td>{{ item.dist }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card white">
+        <div class="card-content">
+            <span class="card-title">Public Transportation</span>
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Distance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in transportation %}
+                    <tr>
+                        <td>{{ item.type }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.dist }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
