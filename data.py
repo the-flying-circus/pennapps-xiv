@@ -145,11 +145,18 @@ def get_public_services(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
     data = get_nearby(loc["lat"], loc["lng"], building="library|post_office|veterinary_care")
     out = []
-    for x in data["results"][:10]:
+    types = {}
+    for x in data["results"][:20]:
         loc2 = x["geometry"]["location"]
+        t = type_lookup(x["types"])
+        if t in types:
+            if types[t] == 4: continue
+            types[t] += 1
+        else:
+            types[t] = 1
         out.append({
             "name": x["name"],
-            "type": type_lookup(x["types"]),
+            "type": t,
             "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
         })
     return out
@@ -158,11 +165,18 @@ def get_parks(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
     data = get_nearby(loc["lat"], loc["lng"], building="park|zoo|campground")
     out = []
-    for x in data["results"][:10]:
+    types = {}
+    for x in data["results"][:20]:
         loc2 = x["geometry"]["location"]
+        t = type_lookup(x["types"])
+        if t in types:
+            if types[t] == 4: continue
+            types[t] += 1
+        else:
+            types[t] = 1
         out.append({
             "name": x["name"],
-            "type": type_lookup(x["types"]),
+            "type": t,
             "dist": haversine(loc["lng"], loc["lat"], loc2["lng"], loc2["lat"])
         })
     return out
@@ -171,8 +185,15 @@ def get_entertainment(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
     data = get_nearby(loc["lat"], loc["lng"], building="amusement_park|aquarium|art_gallery|movie_theater|museum")
     out = []
-    for x in data["results"][:10]:
+    types = {}
+    for x in data["results"][:20]:
         loc2 = x["geometry"]["location"]
+        t = type_lookup(x["types"])
+        if t in types:
+            if types[t] == 3: continue
+            types[t] += 1
+        else:
+            types[t] = 1
         out.append({
             "name": x["name"],
             "type": type_lookup(x["types"]),
@@ -184,8 +205,15 @@ def get_emergency(geoinfo):
     loc = geoinfo["results"][0]["geometry"]["location"]
     data = get_nearby(loc["lat"], loc["lng"], building="fire_station|hospital|police")
     out = []
-    for x in data["results"][:10]:
+    types = {}
+    for x in data["results"][:20]:
         loc2 = x["geometry"]["location"]
+        t = type_lookup(x["types"])
+        if t in types:
+            if types[t] == 4: continue
+            types[t] += 1
+        else:
+            types[t] = 1
         out.append({
             "name": x["name"],
             "type": type_lookup(x["types"]),
