@@ -220,9 +220,13 @@
                     {% for item in transportation|crop_list %}
                     <tr>
                         {% if item.type == "bus_station" %}
-                        <td><i class="tiny material-icons">directions_bus</i>&ensp;Bus Stop</td>
+                        <td><i class="tiny material-icons">directions_bus</i>&ensp;Bus Station</td>
                         {% elif item.type == "subway_station" %}
-                        <td><i class="tiny material-icons">train</i>&ensp;Subway Station</td>
+                        <td><i class="tiny material-icons">subway</i>&ensp;Subway Station</td>
+                        {% elif item.type == "train_station" %}
+                        <td><i class="tiny material-icons">train</i>&ensp;Train Station</td>
+                        {% elif item.type == "transit_station" %}
+                        <td><i class="tiny material-icons">subway</i>&ensp;Transit Station</td>
                         {% else %}
                         <td>{{ item.type|title }}</td>
                         {% endif %}
