@@ -17,22 +17,26 @@ def info():
     address = request.args.get("query")
     import data, secret
     geoinfo = data.geocode(address)
-    laddr, lzip = data.split_from_geocode(geoinfo)
-    if laddr and lzip:
-        r = requests.get("https://maps.googleapis.com/maps/api/place/textsearch/json", params = {
-            "query": address,
-            "key": secret.GMAPS_PLACES_KEY
-        })
-        place_id = r.json()["results"][0]["place_id"]
-        context = {"mapkey": secret.GMAPS_EMBED_KEY,
-                   "place_id": place_id,
-                   "overview": data.get_overview_data(laddr, lzip),
-                   "taxes": data.get_tax_history(),
-                   "neighborhood": data.get_neighborhood_data(),
-                   "services": data.get_public_services(geoinfo),
-                   "transportation": data.get_transportation(geoinfo),
-        }
-        return render_template("info.html", **context)
+    if geoinfo:
+        laddr, lzip = data.split_from_geocode(geoinfo)
+        if laddr and lzip:
+            r = requests.get("https://maps.googleapis.com/maps/api/place/textsearch/json", params = {
+                "query": address,
+                "key": secret.GMAPS_PLACES_KEY
+            })
+            place_id = r.json()["results"][0]["place_id"]
+            context = {"mapkey": secret.GMAPS_EMBED_KEY,
+                       "place_id": place_id,
+                       "overview": data.get_overview_data(laddr, lzip),
+                       "taxes": data.get_tax_history(),
+                       "neighborhood": data.get_neighborhood_data(),
+                       "services": data.get_public_services(geoinfo),
+                       "transportation": data.get_transportation(geoinfo),
+            }
+            return render_template("info.html", **context)
+        else:
+            flash("Invalid address!")
+            return redirect("/")
     else:
         flash("Invalid address!")
         return redirect("/")
