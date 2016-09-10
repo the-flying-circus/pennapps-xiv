@@ -175,6 +175,8 @@
                         <td><i class="tiny material-icons">account_balance</i>&ensp;Exhibit</td>
                         {% elif item.type == "movie_theater" %}
                         <td><i class="tiny material-icons">theaters</i>&ensp;Movie Theater</td>
+                        {% elif item.type == "library" %}
+                        <td><i class="tiny material-icons">book</i>&ensp;Library</td>
                         {% else %}
                         <td>{{ item.type|title }}</td>
                         {% endif %}
