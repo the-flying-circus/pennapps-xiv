@@ -35,7 +35,7 @@
         <div class="card-content" style="position: relative">
             <span class="card-title">Overview</span>
             {% if overview %}
-            <div class="row">
+            <div class="row" style="margin-bottom:0">
                 <ul class="col s12 m12 l6">
                     <li><strong>{{ overview.address.street }}<br>{{ overview.address.city }}, {{ overview.address.state }} {{ overview.address.zipcode }}</strong></li>
                     <li><strong>{% if overview.bedrooms %}{{ overview.bedrooms }} beds&ensp;-&ensp;{% endif %}{% if overview.bathrooms %}{{ overview.bathrooms }} baths&ensp;-&ensp;{% endif %}{{ overview.sqft }} ft<sup>2</sup></strong></li>
@@ -49,8 +49,14 @@
                     <li></li>
                 </ul>
             </div>
-            <a href="{{ overview.zillow }}" target="_blank" class="waves-effect waves-light btn blue">More Details&ensp;<i class="material-icons">open_in_new</i></a><br>
-            <a href="{{ overview.similar }}" target="_blank" class="waves-effect waves-light btn space-above blue">Comparable Properties&ensp;<i class="material-icons">open_in_new</i></a>
+            <div class="row" style="margin-bottom:0">
+                <div class="col s12 m6 l6">
+                    <a style="margin-top:15px" href="{{ overview.zillow }}" target="_blank" class="waves-effect waves-light btn blue">More Details&ensp;<i class="material-icons">open_in_new</i></a>
+                </div>
+                <div class="col s12 m6 l6" id="similar-container">
+                    <a style="margin-top:15px" href="{{ overview.similar }}" target="_blank" class="waves-effect waves-light btn blue">Comparable Properties&ensp;<i class="material-icons">open_in_new</i></a>
+                </div>
+            </div>
             <img src="img/zillow.png" title="Provided by Zillow" class="zillow-img" />
             {% else %}
             <p>We were not able to find any information about this building on Zillow.</p>
