@@ -19,26 +19,31 @@ $(document).ready(function() {
         scrollOffset: 80
     });
     var chart_data = JSON.parse($("#school-data").text());
-    $.each(["math", "science", "english"], function(k, v) {
-        new Chart($("#chart-" + v)[0].getContext("2d"), {
-            type: "pie",
-            data: {
-                labels: ["Advanced", "Proficient", "Basic", "Failing"],
-                datasets: [
-                    {
-                        data: chart_data[v],
-                        backgroundColor: [
-                            "#66BB6A",
-                            "#36A2EB",
-                            "#FFCE56",
-                            "#FF6384"
-                        ]
-                    }
-                ]
-            },
-            options: {
-                maintainAspectRatio: true
-            }
-        });
-    });
+    var options = [
+    	{selector: "#schools", offset: 500, callback: function() {
+      	    $.each(["math", "science", "english"], function(k, v) {
+		new Chart($("#chart-" + v)[0].getContext("2d"), {
+		    type: "pie",
+		    data: {
+			labels: ["Advanced", "Proficient", "Basic", "Failing"],
+			datasets: [
+			    {
+				data: chart_data[v],
+				backgroundColor: [
+				    "#66BB6A",
+				    "#36A2EB",
+				    "#FFCE56",
+				    "#FF6384"
+				]
+			    }
+			]
+		    },
+		    options: {
+			maintainAspectRatio: true
+		    }
+		});
+            });
+	}}
+    ];
+    Materialize.scrollFire(options);
 });
