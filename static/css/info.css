@@ -55,6 +55,10 @@
     margin: 0;
 }
 
+.space-above {
+    margin-top: 10px;
+}
+
 .zillow-img {
     position: absolute;
     bottom: 25px;
