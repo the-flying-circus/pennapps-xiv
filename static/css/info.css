@@ -7,6 +7,17 @@
     cursor: pointer;
 }
 
+#slide-out div {
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+#slide-out div i {
+    font-size: 6rem;
+    display: initial;
+    cursor: pointer;
+}
+
 .property-img {
     height: 60vh;
     width: 100%;
