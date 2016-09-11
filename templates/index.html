@@ -11,12 +11,13 @@
     {{ super() }}
     <div id="welcome-wrapper">
         <div id="welcome-div">
-            <h1 id="welcome-text" class="center-align">Welcome, Homie.</h1>
+            <h1 class="center-align">Homie</h1>
+            <h5 class="center-align">Your best friend in home buying.</h5>
             <div class="row">
                 <form id="search-form" action="info" method="GET">
                     <div class="input-field col s12 m10 offset-m1 l8 offset-l2">
                         <i class="material-icons prefix">search</i>
-                        <input name="query" id="search" type="text" class="validate" required>
+                        <input name="query" id="search" type="text" class="validate" placeholder="Enter an address" required>
                     </div>
                     <input type="submit" class="hide">
                 </form>
