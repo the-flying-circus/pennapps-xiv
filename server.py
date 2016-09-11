@@ -17,8 +17,7 @@ def format_date(t):
 
 @app.template_filter()
 def format_money(m):
-    locale.setlocale( locale.LC_ALL, '' )
-    return locale.currency(m, grouping=True)
+    return "${:,.2f}".format(float(m))
 
 @app.template_filter()
 def crop_list(l):
