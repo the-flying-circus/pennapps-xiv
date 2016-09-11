@@ -17,6 +17,7 @@ $(document).ready(function() {
 
 function start_preloader() {
     $("#welcome-div .input-field").velocity({width: 0, opacity: 0.1}, {duration: 300, complete: function() {
+        $("#welcome-div .input-field").slideUp();
         $(".preloader-wrapper").addClass("active");
     }});
 }
