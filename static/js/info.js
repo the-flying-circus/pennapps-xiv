@@ -8,6 +8,9 @@ $(document).ready(function() {
     $btn_collapse.sideNav({
         menuWidth: 240
     });
+    window.setTimeout(function() {
+        Materialize.showStaggeredList("#slide-out");
+    }, 500);
     $("#slide-out div i").click(function() {
         $("html").velocity("scroll", {offset: 0});
     });
