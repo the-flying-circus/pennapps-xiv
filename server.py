@@ -17,7 +17,7 @@ def format_date(t):
 
 @app.template_filter()
 def format_money(m):
-    return "${:,.2f}".format(float(m))
+    return "${:,.2f}".format(float(m)) if m else None
 
 @app.template_filter()
 def crop_list(l):

@@ -138,7 +138,7 @@ def get_overview_data(laddr, lzip):
         "bedrooms": data.get("bedrooms", None),
         "bathrooms": data.get("bathrooms", None),
         "lastSold": data.get("lastSoldDate", None),
-        "zestimate": float(data["zestimate"]["amount"]),
+        "zestimate": float(data["zestimate"]["amount"]) if data["zestimate"]["amount"] else None,
         "similar": data["links"]["comparables"],
         "change": data["zestimate"]["valueChange"],
         "tax": data["taxAssessment"]
