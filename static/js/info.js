@@ -8,6 +8,9 @@ $(document).ready(function() {
     $btn_collapse.sideNav({
         menuWidth: 240
     });
+    $("#slide-out div i").click(function() {
+        $("html").velocity("scroll", {offset: 0});
+    });
     $("#slide-out").click(function() {
         if ($window.width() <= 992)
             $btn_collapse.sideNav("hide");

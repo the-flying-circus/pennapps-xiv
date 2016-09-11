@@ -12,6 +12,7 @@
 {% block nav %}
     {{ super() }}
     <ul id="slide-out" class="side-nav fixed">
+        <div class="center-align"><i class="large material-icons blue-text center-align">home</i></div>
         <li><a href="#overview">Overview</a></li>
         <li><a href="#schools">Schools</a></li>
         <li><a href="#services">Services</a></li>
@@ -26,7 +27,7 @@
 
 {% block content %}
     {{ super() }}
-    <div class="row">
+    <div id="top" class="row scrollspy">
         <div class="col s12 m12 l6"><img class="property-img" src="https://maps.googleapis.com/maps/api/streetview?location={{ lat }},{{ lng }}&size=300x300&key={{ mapkey }}" alt="property image"></div>
         <div class="col s12 m12 l6"><iframe class="map" src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ place_id }}&key={{ mapkey }}" allowfullscreen></iframe></div>
     </div>
