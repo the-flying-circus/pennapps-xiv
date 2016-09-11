@@ -6,7 +6,7 @@ $(document).ready(function() {
     var sr = ScrollReveal();
     sr.reveal(".property-img, .map, .card");
     $btn_collapse.sideNav({
-        menuWidth: 240
+        menuWidth: 260
     });
     window.setTimeout(function() {
         Materialize.showStaggeredList("#slide-out");
