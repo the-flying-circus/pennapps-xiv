@@ -51,6 +51,10 @@
     font-size: 1.3rem;
 }
 
+.overview .btn {
+    font-size: 1rem;
+}
+
 .overview ul {
     margin: 0;
 }
