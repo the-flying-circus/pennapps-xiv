@@ -131,15 +131,15 @@ def get_overview_data(laddr, lzip):
     if not data:
         return None
     return {
-        "sqft": float(data["finishedSqFt"]),
-        "built": int(data["yearBuilt"]),
-        "zillow": data["links"]["homedetails"],
-        "address": data["address"],
+        "sqft": float(data.get("finishedSqFt", 0)),
+        "built": int(data.get("yearBuilt", 0)),
+        "zillow": data["links"].get("homedetails", None),
+        "address": data.get("address", None),
         "bedrooms": data.get("bedrooms", None),
         "bathrooms": data.get("bathrooms", None),
         "lastSold": data.get("lastSoldDate", None),
         "zestimate": float(data["zestimate"]["amount"]) if data["zestimate"]["amount"] else None,
-        "similar": data["links"]["comparables"],
+        "similar": data["links"].get("comparables", None),
         "change": data["zestimate"].get("valueChange", None),
         "tax": data.get("taxAssessment", None)
     }
