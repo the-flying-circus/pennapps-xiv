@@ -27,7 +27,7 @@
 {% block content %}
     {{ super() }}
     <div class="row">
-        <div class="col s12 m12 l6"><img class="property-img" src="https://maps.googleapis.com/maps/api/streetview?location={{ lat }},{{ lng }}&size=350x300&key={{ mapkey }}" alt="property image"></div>
+        <div class="col s12 m12 l6"><img class="property-img" src="https://maps.googleapis.com/maps/api/streetview?location={{ lat }},{{ lng }}&size=300x300&key={{ mapkey }}" alt="property image"></div>
         <div class="col s12 m12 l6"><iframe class="map" src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ place_id }}&key={{ mapkey }}" allowfullscreen></iframe></div>
     </div>
     <div id="overview" class="card white overview scrollspy">
