@@ -140,8 +140,8 @@ def get_overview_data(laddr, lzip):
         "lastSold": data.get("lastSoldDate", None),
         "zestimate": float(data["zestimate"]["amount"]) if data["zestimate"]["amount"] else None,
         "similar": data["links"]["comparables"],
-        "change": data["zestimate"]["valueChange"],
-        "tax": data["taxAssessment"]
+        "change": data["zestimate"].get("valueChange", None),
+        "tax": data.get("taxAssessment", None)
     }
 
 def get_public_services(geoinfo):
