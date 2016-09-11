@@ -7,6 +7,10 @@
     cursor: pointer;
 }
 
+#slide-out li {
+    opacity: 0;
+}
+
 #slide-out div {
     margin-top: 30px;
     margin-bottom: 10px;
